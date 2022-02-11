@@ -1,0 +1,23 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+$primary:#6EC1E4;
+$secondary: #10B9B5;
+$light:#FFFFFF;
+
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark,
+  "ord_blue":   #10B9B5,
+  "ord_pink":   #E63C6C,
+  "ord_yellow": #FFD400,
+  "bs-light": #ffffff,
+);
+
+$form-check-padding-start:0px;

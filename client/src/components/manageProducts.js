@@ -5,38 +5,18 @@ import axios from "axios";
 
 export default function Products() {
 
-    const [items, setRemove] = useState([]);
+    const [removeItems, setRemove] = useState([]);
 
     function handleCheckboxRemoveChange(event) {
         if (event.target.checked) {
-            if (!items.includes(event.target.value)) {
+            if (!removeItems.includes(event.target.value)) {
                 setRemove(prevState => [...prevState, event.target.value])
-                console.log(items);
+                console.log(removeItems);
             }
         } else {
             setRemove(prevState => prevState.filter(color => color !== event.target.value));
           
         }
-    }
-
-    const removeItems = async(event) =>{
-        event.preventDefault();
-        const removeProducts = {
-            items: items
-        }
-
-        console.log(removeProducts);
-
-        const res = await axios.post('http://localhost:3001/product/delete', removeProducts);
-
-        if (res.data === true) {
-            console.log("ok");
-        }
-        if (res.data === false) {
-            console.log("No");
-
-        }
-       
     }
     const navigate = useNavigate();
 
@@ -53,15 +33,15 @@ export default function Products() {
 
     return (
 
-        <div className="not-sidebar">
+        <div>
             <div className="container">
-                <button className="btn turkiz btn-block" onClick={removeItems}> הסר פריטים נבחרים</button>
                 <div className="px-lg-5">
                     <div className="row">
                         {
                             list.map((item) =>
                                 <div key={item._id} className="col-xl-3 col-lg-4 col-md-6 mb-4">
-                                    <input  class="form-check-input" type="checkbox" value={item._id} onChange={handleCheckboxRemoveChange} />
+                                     <h5>הסר</h5>
+                                    <input type="checkbox"  value={item._id} onChange={handleCheckboxRemoveChange} />
                                            
                                
                                     <div onClick={() => clickMe(item)} className="bg-white product-image" role="button">

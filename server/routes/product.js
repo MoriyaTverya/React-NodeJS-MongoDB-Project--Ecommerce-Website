@@ -36,7 +36,8 @@ router.get("/get", async (req, res) => {
        let products = await Product.find();  
        res.send(products);
 });
-      
+
+
 router.get(`/:id`, async (req, res) => {
   const id = req.params.id;
   console.log(req.params.id);
@@ -45,6 +46,37 @@ router.get(`/:id`, async (req, res) => {
   return res.status(200).send(product);
 });
 
+
+router.get(`/getImage/:id`, async (req, res) => {
+  const id = req.params.id;
+  console.log(req.params.id);
+  let product = await Product.findOne({ _id: id });
+  if (!product) return res.status(404).send("Sorry, there's no such product");
+  return res.status(200).send(product.productImages[0]);
+});
+
+router.route("/delete").post(async(req, res) => {
+  try{
+  const ids = req.body.items;
+  const product = await Product.deleteMany({ _id: { $in: ids} });
+  if (!product) return res.status(404).send(false);
+  return res.status(200).send(true);}
+  catch(err){
+    return res.status(200).send(err);
+  }
+});
+
+router.get("/getItems").post(async(req, res) => {
+  try{
+  const ids = req.body.ids;
+  const products = await Product.find({ _id: { $in: ids} });
+  console.log(products);
+  if (!products) return res.status(404).send(false);
+  return res.status(200).send(true);}
+  catch(err){
+    return res.status(200).send(err);
+  }
+});
 module.exports = router;
 // router.post("/", async (req, res) => {
 //   console.log(req.body);

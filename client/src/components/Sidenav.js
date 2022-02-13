@@ -28,6 +28,21 @@ export default function Navbar() {
            הוסף מוצר
           </li>
           </a>
+          <a class="sidenav-link" href="#">
+          <li class="sidenav-item sidenav-link">
+           החזרות
+          </li>
+          </a>
+          <a class="sidenav-link" href="/cart">
+          <li class="sidenav-item sidenav-link">
+           סל
+          </li>
+          </a>
+          <a class="sidenav-link" href="/cart">
+          <li class="sidenav-item sidenav-link">
+           מוצרים שאהבת
+          </li>
+          </a>
         </ul>
         </nav>
 

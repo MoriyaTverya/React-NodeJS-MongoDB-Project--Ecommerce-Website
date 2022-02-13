@@ -51,9 +51,16 @@ padding: 0px;
 #navbarNavDropdown{
 direction: rtl;
 }
-.navbar-nav.nav-link{
-  color:#ffffff
 
+.nav-link{
+  text-decoration: none;
+  min-width: max-content;
+  color: rgba(0, 0, 0, 0.55) !important;
+}
+
+.nav-link :hover {
+cursor: pointer !important;
+color: black;
 }
 
 .sidenav-link{

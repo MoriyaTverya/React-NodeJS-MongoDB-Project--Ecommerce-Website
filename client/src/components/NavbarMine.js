@@ -50,11 +50,12 @@ export default function NavbarMine(props) {
                             <img src={heart} className="icon"></img>
                         </a>
                     </div>
-                    <div className="nav-item ">
-                        <a className="align-self-center" href="/userDashBoard">
+                    <div className="nav-item">
+                        <a className="align-self-center d-flex" href="/userDashBoard">
                             <img src={user_icon} className="icon"></img>
+                           {/* <a className="nav-link">{user.user}</a>  */}
                         </a>
-                        {user.user}
+                    
                     </div>
                     
                     <button className="btn pink nav-item" role="button" onClick={logout}>

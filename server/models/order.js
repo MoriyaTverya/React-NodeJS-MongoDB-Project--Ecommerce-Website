@@ -7,8 +7,8 @@ const orderSchema = {
     date:Date,
     products:[{
         type: Object
-    }
-    ],
+    }],
+    status:String
 }   
 
 const Order = connection.model('Order', orderSchema);

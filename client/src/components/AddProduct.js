@@ -8,7 +8,8 @@ export default function AddProduct() {
         productCode:'',
         productDescribe: '',
         productPrice: '',
-        
+        productSalePrice:'',
+        productSale:false
     })
 
     const [productSizes, setSizes] = useState({});
@@ -31,16 +32,6 @@ export default function AddProduct() {
     }, []);
 
 
-    function handleRadioColorChange(event) {
-        const value = event.target.value;
-        setInput(prevInput => {
-            return {
-                ...prevInput,
-                productCode: value
-            }
-        })
-        console.log("model change", input);
-    }
 
     function handleCheckboxColorChange(event) {
         if (event.target.checked) {
@@ -63,6 +54,24 @@ export default function AddProduct() {
             setCategories(prevState => prevState.filter(category => category !== event.target.value));
         }
     }
+    function handleSaleChange(event) {
+        if (event.target.checked) {
+            setInput(prevState => {
+                return {
+                    ...prevState,
+                    productSale: true
+                }
+            })
+        } else {
+            setInput(prevState => {
+                return {
+                    ...prevState,
+                    productSale: false
+                }
+            })
+        }
+    }
+
 
     function handleSizeChange(event) {
         const { name, value } = event.target;
@@ -103,20 +112,22 @@ export default function AddProduct() {
             productImages: productImages,
             productColors: productColors,
             productSizes: productSizes,
+            productSale: input.productSale,
+            productSalePrice: input.productSalePrice
            
         }
 
         console.log(newProduct);
 
-        const res = await axios.post('http://localhost:3001/product/create', newProduct);
+        // const res = await axios.post('http://localhost:3001/product/create', newProduct);
 
-        if (res.data === true) {
-            alert("ok");
-        }
-        if (res.data === false) {
-            alert("No");
+        // if (res.data === true) {
+        //     alert("ok");
+        // }
+        // if (res.data === false) {
+        //     alert("No");
 
-        }
+        // }
     }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -185,6 +196,22 @@ export default function AddProduct() {
                                 className="form-control p-2 mb-4"
                                 placeholder="מחיר"
                             />
+
+                         
+                            <input type="checkbox" className="form-check-input m-1" onChange={handleSaleChange}  name="productSale"/>
+                            <label class="form-check-label" for="productSale"><h5>מבצע</h5></label>
+                            <div>
+                               <h6>מחיר מבצע</h6>
+                               <input onChange={handleChange}
+                                name="productSalePrice"
+                                value={input.productSalePrice}
+                                type="number" min="0.00" step="0.1"
+                                className="form-control p-2 mb-4"
+                                placeholder="מחיר מבצע"
+                                disabled = {!input.productSale}
+                            /></div>
+                            
+                            
                             <h5>קטגוריות</h5>
                             {
 
@@ -212,7 +239,7 @@ export default function AddProduct() {
                                             <label class="form-check-label float-left"> {size}</label>
                                             <input onChange={handleSizeChange}
                                                 name={size}
-                                                type="number"
+                                                type="number" min="0" step="1"
                                                 value={input.size}
                                                 className="form-control"
                                                 placeholder="כמות" style={{ width: "80px" }}

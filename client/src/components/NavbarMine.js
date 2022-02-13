@@ -53,7 +53,7 @@ export default function NavbarMine(props) {
                     <div className="nav-item">
                         <a className="align-self-center d-flex" href="/userDashBoard">
                             <img src={user_icon} className="icon"></img>
-                           {/* <a className="nav-link">{user.user}</a>  */}
+                           <a className="nav-link">{user.user}</a> 
                         </a>
                     
                     </div>

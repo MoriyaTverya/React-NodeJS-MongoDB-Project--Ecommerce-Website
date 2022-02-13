@@ -14,21 +14,10 @@ export default function ProductView() {
     const [sizes, setSizes] = useState({});
     const [item, setItem] = useState([]);
     const [images, setImages] = useState([]);
-    const [largeImage, setImage] = useState('');  
-    
-    const [product, setProduct] = useState({
-        productId: id,
-        psizes: {}
-    })
+    const [largeImage, setImage] = useState('');
+    const [isStock, setIsStock] = useState([]);
 
-    const [order, setOrder] = useState({
-        customerId: user.id,
-        date: Date(),
-        products: [{}]
-    });
-
-  
-    let arr =[]
+    let arr = []
 
     useEffect(async () => //initial
     {
@@ -41,7 +30,7 @@ export default function ProductView() {
         for (const [key] of Object.entries(object)) {
             arr.push(key);
         }
-            setSizeList(arr);
+        setSizeList(arr);
         setStock(result.data.productSizes);
     }, []);
 
@@ -49,44 +38,72 @@ export default function ProductView() {
         const myimg = event.target.name;
         setImage(myimg);
     }
-    const handleSizeChange  =async (event) =>{
-        const { name, value } = event.target;
-        if (stock[name] < value) {
-            alert("אין מספיק במלאי");
-        }
-        else {
-            // await promisedSetSize(name, value);
-            setSizes(prevState => {
-                return {
-                    ...prevState,
-                    [name]: parseInt(value, 10)
-                }
-            })
-            setProduct(prevInput => {
-                return {
-                    ...prevInput,
-                    psizes: sizes
-                }
-            })
-            setOrder(prevInput => {
-                return {
-                    ...prevInput,
-                    products: product
-                }
-            })
 
-        }
+    function handleSizeChange(event) {
+        const { name, value } = event.target;
+        setSizes(prevState => {
+            return {
+                ...prevState,
+                [name]: parseInt(value, 10)
+            }
+        });
     }
+
+    function handleSizeChange(event) {
+        const { name, value } = event.target; 
+        if (stock[name] < value) {
+            setIsStock(" ממידה "+name+" קיימים רק "+stock[name]+" פריטים במלאי ")
+        }
+        else{
+            setIsStock("")
+        setSizes(prevState => {
+            return {
+                ...prevState,
+                [name]: parseInt(value, 10)
+            }
+        });}
+    }
+    // const handleSizeChange  =async (event) =>{
+    //     const { name, value } = event.target;
+    //     if (stock[name] < value) {
+    //         alert("אין מספיק במלאי");
+    //     }
+    //     else {
+    //         // await promisedSetSize(name, value);
+    //         setSizes(prevState => {
+    //             return {
+    //                 ...prevState,
+    //                 [name]: parseInt(value, 10)
+    //             }
+    //         })
+    //         setProduct(prevInput => {
+    //             return {
+    //                 ...prevInput,
+    //                 psizes: sizes
+    //             }
+    //         })
+    //         setOrder(prevInput => {
+    //             return {
+    //                 ...prevInput,
+    //                 products: product
+    //             }
+    //         })
+
+    //     }
+    // }
     const createOrder = async (event) => {
         event.preventDefault();
-        
-        // const newOrder ={
-        //     customerId: order.customerId,
-        //     date: Date,
-        //     products:[product]
-        // }
-        // console.log(newOrder);
-        const res = await axios.post('http://localhost:3001/order/create', order);
+       
+        const newOrder ={
+            customerId: user.id,
+            date: Date(),
+            products:[{
+            productId: id,
+            psizes: sizes
+              }]
+        }
+        console.log(newOrder);
+        const res = await axios.post('http://localhost:3001/order/create', newOrder);
 
         if (res.data === true) {
             alert("ok");
@@ -132,13 +149,14 @@ export default function ProductView() {
 
                             <h4 className="price">מידות</h4>
                             <div>
+                               
                                 {
                                     sizeList.map((size) =>
                                         <span key={size} className="form-check">
                                             <label className="form-check-label"> {size}</label>
                                             <input onChange={handleSizeChange}
                                                 name={size}
-                                                type="number"
+                                                type="number" min="0" step="1"
                                                 value={input.size}
                                                 className="form-control"
                                                 id="rounded"
@@ -147,7 +165,8 @@ export default function ProductView() {
                                         </span>
 
                                     )
-                                }
+                                } 
+                                <p className="mt-3">{isStock}</p>
                             </div>
 
                             <div className="item-buttons">

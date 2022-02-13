@@ -16,6 +16,8 @@ router.route("/create").post((req, res) => {
     const productColors = req.body.productColors;
     const productImages = req.body.productImages;
     const productSizes = req.body.productSizes;
+    const productSale = req.body.productSale;
+    const productSalePrice = req.body.productSalePrice;
 
     const newProduct = new Product({
       productName, 
@@ -25,7 +27,9 @@ router.route("/create").post((req, res) => {
       productCategories,
       productColors,
       productImages,
-      productSizes
+      productSizes, 
+      productSale,
+      productSalePrice
     });
     
     newProduct.save();

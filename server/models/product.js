@@ -7,6 +7,8 @@ const productSchema = {
     productCode: String,
     productDescribe:String, 
     productPrice: Number,
+    productSalePrice:Number,
+    productSale:Boolean,
     productCategories:[{
         type: String
     }], 

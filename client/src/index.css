@@ -677,7 +677,11 @@ div.main_list ul li a:hover {
   display: none;
 }
 
-  
+.dropdown-menu[data-bs-popper] {
+  top: 100%;
+  right: 0;
+  margin-top: 0.125rem;
+}
 /* Show the checkmark when checked */
 .containerc input:checked ~ .checkmarkv:after {
   display: block;

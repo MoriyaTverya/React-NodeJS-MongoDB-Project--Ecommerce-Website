@@ -10,7 +10,6 @@ export default function Orders() {
     const [items, setItems] = useState({});
 
 
-
     useEffect(async () => //initial
     {
         const fetchOrders = async () => {
@@ -43,12 +42,6 @@ export default function Orders() {
     }, [orderlist]);
 
     var formatter = new Intl.NumberFormat()
-    // 'he-IL', {
-    //     style: 'currency',
-    //     currency: 'NIS',
-
-    //     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
-    //   });
     function getSizes(sizes) {
         var rows = [];
         for (const size in sizes) {
@@ -98,10 +91,10 @@ export default function Orders() {
                                             <div >
                                                 {items[p.productId] ?
                                                     <div className="p-1 m-2 d-flex justify-content-around">
-                                                        <img className="col-2" src={items[p.productId].productImages[0]}></img>
+                                                        <img className="w-25" src={items[p.productId].productImages[0]}></img>
                                                         <div className="">
                                                             <h5>{items[p.productId].productName}</h5>
-                                                            {/* <p>{items[p.productId].productDescribe}</p> */}
+                                                            <p>{items[p.productId].productDescribe}</p>
                                                         </div>
                                                         <div>
                                                         <h5>מידות</h5>

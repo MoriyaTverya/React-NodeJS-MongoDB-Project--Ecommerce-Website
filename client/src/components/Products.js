@@ -26,17 +26,19 @@ export default function Products() {
                     <div className="row">
                         {
                             list.map((item) =>
-                                <div key={item._id} className="col-xl-3 col-lg-4 col-md-6 mb-4">
+                                <div key={item._id} className="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-12">
                                     <div onClick={() => clickMe(item)} className="bg-white product-image" role="button">
                                         <a href="" className="product-like-icon"><i className="bi bi-chevron-right"></i></a>
                                         <img src={item.productImages[0]} alt="" className="img-fluid card-img-top" />
-                                        <div className="p-3">
+                                        <div className="mt-1">
                                             {/* <h5> <a href="#" className="text-dark"></a></h5> */}
                                             <p className="large text-muted mb-0">{item.productName}</p>
-                                            <div className="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-3">
-                                                <p className="small mb-0"><span className="font-weight-bold">₪{item.productPrice}</span></p>
+                                            
+                                                    {item.productSale? 
+                                                    <div className="d-flex"><p className="text-decoration-line-through">  ₪{item.productPrice}</p> &nbsp; ₪{item.productSalePrice}</div>
+                                                    :<div className="d-flex">₪{item.productPrice}</div>}
+                                                   
                                                 
-                                            </div>
                                         </div>
                                     </div>
                                 </div>)

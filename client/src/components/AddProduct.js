@@ -119,15 +119,15 @@ export default function AddProduct() {
 
         console.log(newProduct);
 
-        // const res = await axios.post('http://localhost:3001/product/create', newProduct);
+        const res = await axios.post('http://localhost:3001/product/create', newProduct);
 
-        // if (res.data === true) {
-        //     alert("ok");
-        // }
-        // if (res.data === false) {
-        //     alert("No");
+        if (res.data === true) {
+            alert("ok");
+        }
+        if (res.data === false) {
+            alert("No");
 
-        // }
+        }
     }
     const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {

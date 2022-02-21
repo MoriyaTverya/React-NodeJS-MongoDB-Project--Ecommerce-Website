@@ -17,7 +17,7 @@ export default function ProductView() {
     const [largeImage, setImage] = useState('');
     const [isStock, setIsStock] = useState([]);
 
-    let arr = []
+    let arr = [];
 
     useEffect(async () => //initial
     {
@@ -50,60 +50,87 @@ export default function ProductView() {
     }
 
     function handleSizeChange(event) {
-        const { name, value } = event.target; 
+        const { name, value } = event.target;
         if (stock[name] < value) {
-            setIsStock(" ממידה "+name+" קיימים רק "+stock[name]+" פריטים במלאי ")
+            setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
         }
-        else{
+        else {
             setIsStock("")
-        setSizes(prevState => {
-            return {
-                ...prevState,
-                [name]: parseInt(value, 10)
-            }
-        });}
+            setSizes(prevState => {
+                return {
+                    ...prevState,
+                    [name]: parseInt(value, 10)
+                }
+            });
+        }
     }
-    // const handleSizeChange  =async (event) =>{
-    //     const { name, value } = event.target;
-    //     if (stock[name] < value) {
-    //         alert("אין מספיק במלאי");
-    //     }
-    //     else {
-    //         // await promisedSetSize(name, value);
-    //         setSizes(prevState => {
-    //             return {
-    //                 ...prevState,
-    //                 [name]: parseInt(value, 10)
-    //             }
-    //         })
-    //         setProduct(prevInput => {
-    //             return {
-    //                 ...prevInput,
-    //                 psizes: sizes
-    //             }
-    //         })
-    //         setOrder(prevInput => {
-    //             return {
-    //                 ...prevInput,
-    //                 products: product
-    //             }
-    //         })
 
-    //     }
+    function getPrice(sizes) {
+        let sum = 0;
+        for (const size in sizes) {
+            sum += parseFloat(sizes[size], 10);
+        }
+
+        let price = sum * item.productPrice;
+        return price;
+    }
+
+
+    // function getSumPrice(products) {
+    //     var sum = 0;
+    //     products.forEach(p => {
+    //         sum += getPrice(p.productId, p.psizes);
+    //     })
+    //     return sum;
     // }
+    function getStock(stock, sizes){
+        for(const size in sizes){
+            stock[size] = stock[size] - sizes[size];
+        }
+        console.log("stockk: ", stock);
+
+        return stock;
+
+    }
+
     const createOrder = async (event) => {
         event.preventDefault();
-       
-        const newOrder ={
+
+        const newOrder = {
             customerId: user.id,
             date: Date(),
-            products:[{
-            productId: id,
-            psizes: sizes
-              }]
+            products: [{
+                productId: id,
+                psizes: sizes,
+                price: item.productPrice,
+            }],
+            totalPrice: getPrice(sizes),
+            status: 'בטיפול',
+            
         }
         console.log(newOrder);
         const res = await axios.post('http://localhost:3001/order/create', newOrder);
+
+        if (res.data === true) {
+            alert("ok");
+        }
+        if (res.data === false) {
+            alert("No");
+
+        }
+    }
+
+    const addToCart = async (event) => {
+        event.preventDefault();
+        const req = {
+            product: {
+                productId: id,
+                psizes: sizes,
+                price: item.productPrice
+            }
+        }
+        console.log(req);
+        const res = await axios.post(`http://localhost:3001/cart/addToCart/${user.id}`, req);
 
         if (res.data === true) {
             alert("ok");
@@ -136,7 +163,7 @@ export default function ProductView() {
                             </div>
                         </article>
                     </aside>
-                    <aside className="col-lg-5 col-md-7 col-sm-12">
+                    <aside className="col-lg-6 col-md-7 col-sm-12">
                         <article className="card-body">
                             <h1 className="price">{item.productName}</h1>
                             <p className="price-detail-wrap price">
@@ -149,14 +176,14 @@ export default function ProductView() {
 
                             <h4 className="price">מידות</h4>
                             <div>
-                               
+
                                 {
                                     sizeList.map((size) =>
                                         <span key={size} className="form-check">
                                             <label className="form-check-label"> {size}</label>
                                             <input onChange={handleSizeChange}
                                                 name={size}
-                                                type="number" min="0" step="1"
+                                                type="number" min="0" step="1" max={stock[size]}
                                                 value={input.size}
                                                 className="form-control"
                                                 id="rounded"
@@ -165,12 +192,12 @@ export default function ProductView() {
                                         </span>
 
                                     )
-                                } 
+                                }
                                 <p className="mt-3">{isStock}</p>
                             </div>
 
                             <div className="item-buttons">
-                                <button href="#" className="btn btn-block ms-3 turkiz" > הוספה לעגלה </button>
+                                <button href="#" className="btn btn-block ms-3 turkiz" onClick={addToCart}> הוספה לעגלה </button>
                                 <button href="#" className="btn btn-block pink" onClick={createOrder}> הזמנה </button>
                             </div>
 

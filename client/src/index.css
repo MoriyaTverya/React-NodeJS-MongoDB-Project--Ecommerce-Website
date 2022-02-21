@@ -831,3 +831,56 @@ div.main_list ul li a:hover {
   margin-right: 10px;
   margin-left: 10px;
 }
+
+
+
+ .red-heart-checkbox {
+	 visibility: hidden;
+}
+ .red-heart-checkbox + label {
+	 /* -webkit-touch-callout: none;
+	 -webkit-user-select: none;
+	 -khtml-user-select: none;
+	 -moz-user-select: none;
+	 -ms-user-select: none;
+	 user-select: none; */
+	 font-size: 30px;
+	 padding-left: 15px;
+	 transition: all 0.2s;
+}
+ .red-heart-checkbox:checked + label:before {
+	 content: "\f004";
+	 color:#10B9B5;
+}
+ .red-heart-checkbox + label:before {
+  width: 20px;
+  height: 20px;
+  content: ""; 
+  position: absolute;
+  margin-top: -20px;
+  font-family: FontAwesome;
+  font-size: 30px;
+  content: "\f08a";
+  transition: all 0.3s;
+  color: #888;
+}
+ .red-heart-checkbox + label:hover:before {
+	 transform: scale(1.2);
+}
+ .container {
+	 display: flex;
+	 flex-direction: column;
+	 justify-content: center;
+	 align-items: center;
+	 height: 100%;
+}
+ .control-group {
+	 margin: 3px;
+}
+ .attribution {
+	 position: absolute;
+	 bottom: 0;
+	 width: 100%;
+	 text-align: center;
+}
+ 

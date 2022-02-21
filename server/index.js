@@ -24,6 +24,7 @@ app.use("/product", require("./routes/product"));
 app.use("/category", require("./routes/category"));
 app.use("/color", require("./routes/color"));
 app.use("/order", require("./routes/order"));
+app.use("/cart", require("./routes/cart"));
 
 
 //connect to mongo

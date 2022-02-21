@@ -9,6 +9,8 @@ import logo from "../images/ordman_logo_nav.png";
 import { UserContext } from './UserProvider';
 export default function NavbarMine(props) {
 
+
+    
     const user = useContext(UserContext);
     console.log(user);
 
@@ -27,6 +29,15 @@ export default function NavbarMine(props) {
         let result = await axios.get('http://localhost:3001/category/get');
         setCategoryList(result.data);
     }, []);
+    
+    const [cartItems, setCartItems] = useState([]);
+    useEffect(async () => //initial
+    {
+        let result = await axios.get(`http://localhost:3001/cart/getCart/${user.id}`);
+        console.log(result.data.products);
+        setCartItems(result.data.products);
+    }, []);
+    
     // console.log(categoryList);
 
     return (
@@ -47,7 +58,7 @@ export default function NavbarMine(props) {
                     <div className="nav-item">
                         <a href="/Cart" className="notification">
                             <span><img src={sal} className="icon"></img></span>
-                            <span className="badge">3</span>
+                            <span className="badge">{cartItems.length}</span>
                         </a>
                     </div>
                     <div className="nav-item">

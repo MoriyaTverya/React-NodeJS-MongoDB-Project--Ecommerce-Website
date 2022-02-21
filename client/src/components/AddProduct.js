@@ -13,6 +13,7 @@ export default function AddProduct() {
     })
 
     const [productSizes, setSizes] = useState({});
+    const [productSales, setSales] = useState({});
     const [productImages, setImages] = useState([]);
     const [productColors, setColorState] = useState([])
     const [productCategories, setCategories] = useState([]);
@@ -81,6 +82,12 @@ export default function AddProduct() {
                     [name]: parseInt(value, 10)
                 }
             });
+            setSales (prevState => {
+                return {
+                    ...prevState,
+                    [name]: 0
+                }
+            });
     }
 
 
@@ -112,8 +119,10 @@ export default function AddProduct() {
             productImages: productImages,
             productColors: productColors,
             productSizes: productSizes,
+            productSales: productSales,
             productSale: input.productSale,
-            productSalePrice: input.productSalePrice
+            productSalePrice: input.productSalePrice, 
+            productLikes: []
            
         }
 

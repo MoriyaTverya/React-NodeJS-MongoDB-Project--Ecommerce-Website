@@ -8,7 +8,8 @@ const orderSchema = {
     products:[{
         type: Object
     }],
-    status:String
+    status:String,
+    totalPrice:Number
 }   
 
 const Order = connection.model('Order', orderSchema);

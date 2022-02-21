@@ -41,7 +41,7 @@ export default function Orders() {
 
     }, [orderlist]);
 
-    var formatter = new Intl.NumberFormat()
+  
     function getSizes(sizes) {
         var rows = [];
         for (const size in sizes) {
@@ -49,7 +49,9 @@ export default function Orders() {
         }
         return <tbody>{rows}</tbody>;
 
-    }
+    }  
+    
+    var formatter = new Intl.NumberFormat()
     function getPrice(productId, sizes) {
         let sum = 0;
         for (const size in sizes) {
@@ -68,11 +70,6 @@ export default function Orders() {
         return sum;
     }
 
-
-    // console.log("oo", orderlist);
-
-    // console.log("ii", items);
-
     return (
         <div className="not-sidebar">
             <div className="container">
@@ -81,7 +78,9 @@ export default function Orders() {
                     <div className="">
                         {
                             orderlist.map((item) =>
-                                <div key={item._id} className="shadow-sm px-3 py-4 m-3">
+                                <div key={item._id} className="shadow px-3 py-4 m-3 w-75">
+                                    <h5>מזהה לקוח</h5>
+                                    <p className="">{item.customerId} </p>
                                     <h5>תאריך</h5>
                                     <p className="">{dateFormat(item.date, "dd/mm/yyyy HH:MM:ss")} </p>
                                     <hr/>
@@ -90,27 +89,27 @@ export default function Orders() {
                                         item.products.map((p) =>
                                             <div >
                                                 {items[p.productId] ?
-                                                    <div className="p-1 m-2 d-flex justify-content-around">
-                                                        <img className="w-25" src={items[p.productId].productImages[0]}></img>
-                                                        <div className="">
-                                                            <h5>{items[p.productId].productName}</h5>
-                                                            <p>{items[p.productId].productDescribe}</p>
+                                                    <div className="p-1 m-2 d-flex justify-content-around row">
+                                                        <div className="col-lg-2 col-sm-6">
+                                                        <img className="w-100" src={items[p.productId].productImages[0]}></img>
                                                         </div>
-                                                        <div>
-                                                        <h5>מידות</h5>
+                                                        <div className="mt-1 col-lg-4 col-sm-6">
+                                                            <h5>{items[p.productId].productName}</h5>
+                                                            {/* <p>{items[p.productId].productDescribe}</p> */}
+                                                        </div>
+                                                        <div className="col-lg-2 col-sm-4">
+                                                        <h6>כמויות</h6>
                                                         <div>{getSizes(p.psizes)}</div></div>
-                                                        <div><h5> מחיר ליחידה</h5>
-                                                        <p >{items[p.productId].productPrice} ₪ </p></div>
-                                                        <div>
-                                                        <h5>סה"כ</h5>
-                                                        <p class={item._id}>{formatter.format(getPrice(p.productId, p.psizes))} ₪ </p></div>
-                                                          {/* סך הזמנה &nbsp;{formatter.format(getSumPrice(item.products))} ₪ <p className="small mb-0"><span className="font-weight-bold"></span></p> */}
-                                                        
-                                                        
+                                                        <div className="col-lg-2 col-sm-4 ">
+                                                         <h6> מחיר</h6>
+                                                        <p >{p.price} ₪ </p></div>
+                                                        <div className="col-lg-2 col-sm-4">
+                                                        </div>
                                                     </div>
                                                     : <div>
                                                     </div>
                                                 }
+                                                      
                                             </div>
                                         )
 
@@ -119,9 +118,8 @@ export default function Orders() {
                                   
                                     <h5> <a href="#" className="text-dark">{item.productId}</a></h5>
                                     <h5 className="small text-muted mb-0"></h5>
-                                    <div className="d-flex justify-content-between rounded-pill bg-light px-3 py-2 mt-4">
-                                       
-                                        <div className="badge badge-danger px-3 rounded-pill font-weight-normal">מוצר</div>
+                                    <div className="d-flex justify-content-right rounded-pill bg-light px-3 py-0 mt-4">
+                                         <h6>  סה"כ  </h6><p>{formatter.format(item.totalPrice)} ₪ </p>
                                     </div>
                                 </div>
                             )

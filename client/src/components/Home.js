@@ -29,7 +29,7 @@ function Home() {
             {/* <!-- Grid row --> */}
             <div className="row pt-5">
               {/* <!-- Grid column --> */}
-              <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4 ">
+              <div className="col-md-12 col-lg-4 col-xl-3 mx-auto mb-4 ">
                 {/* <!-- Content --> */}
                 <h6 className="text-uppercase fw-bold mb-4">
                   <i className="fas fa-gem me-3"></i>אורדמן ספקים
@@ -42,7 +42,7 @@ function Home() {
               {/* <!-- Grid column --> */}
 
               {/* <!-- Grid column --> */}
-              <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <div className="col-md-6 col-lg-2 col-xl-2 mx-auto mb-4">
                 {/* <!-- Links --> */}
                 <h6 className="text-uppercase fw-bold mb-4">
                   מפת אתר
@@ -63,7 +63,7 @@ function Home() {
               {/* <!-- Grid column --> */}
 
               {/* <!-- Grid column --> */}
-              <div className="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <div className="col-md-6 col-lg-2 col-xl-2 mx-auto mb-4">
                 {/* <!-- Links --> */}
                 <h6 className="text-uppercase fw-bold mb-4">
                   קטגוריות

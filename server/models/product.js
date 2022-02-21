@@ -18,6 +18,10 @@ const productSchema = {
     productColors:  [{
         type: String
     }],
+    productLikes: [{
+        type:String
+    }], 
+    productSales: Object,
     productSizes: Object
 
 }   

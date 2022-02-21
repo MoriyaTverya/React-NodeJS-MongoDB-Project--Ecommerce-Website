@@ -18,7 +18,7 @@ export default function CategoryPage() {
     return (
         <div className="container">
             <h1>{id}</h1>
-            
+            <h3></h3>
         </div>
     );
 }

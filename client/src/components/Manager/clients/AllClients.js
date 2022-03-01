@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 export default function AllClients() {
 
     const [data, setData] = useState([]);
@@ -10,7 +10,7 @@ export default function AllClients() {
 
     useEffect(async () => //initial  
     {
-        let result = await axios.get('http://localhost:3001/clients/get');
+        let result = await axios.get('http://localhost:3001/user/get');
 
         setData(result.data);
         setFilter(result.data);
@@ -45,28 +45,33 @@ export default function AllClients() {
     }
     const handleDelete = async (event) => {
         deleteClients.forEach(async element => {
-            const res = await axios.delete(`http://localhost:3001/clients/delete/${element}`);
-        if (res.data === true) {
-            alert("ok");
-        }
-        if (res.data === false) {
-            alert("No");
+            const res = await axios.delete(`http://localhost:3001/user/delete/${element}`);
+            if (res.data === true) {
+                alert("ok");
+            }
+            if (res.data === false) {
+                alert("No");
 
-        }
+            }
         });
-       
+
         console.log("eeee");
     }
     //const [list, setList] = useState([]);
-   
+
 
     return (
-        <div>
+        <div className="not-sidebar">
 
-            <div class="modal-footer"> <a role="button" class="btn mb-2 mb-md-0 btn-secondary btn-block" href="/addClients"> הוספת לקוח חדש</a> </div>
-            <div class="modal-footer"> <a role="button" class="btn mb-2 mb-md-0 btn-secondary btn-block" onClick={handleDelete}>מחק</a> </div>
-            <TextField onChange={(e) => requestSearch(e.target.value)} />
-            <table class="table table-bordered" data={data}>
+            <a role="button" class="btn btn-block turkiz m-2" href="/addClients"> הוספת לקוח חדש</a>
+           <a role="button" class="btn btn-block pink m-2" onClick={handleDelete}>מחק</a>
+           <div className="nav-item search-wrapper d-flex align-items-center m-4" dir="rtl">
+                        <input onChange={(e) => requestSearch(e.target.value)} id="search-input" className="form-control" type="search" placeholder="חיפוש" ></input>
+                        <i className="fa-solid fa-magnifying-glass"></i>
+                        {/* // <button className="btn" type="submit"><img src={search} className="icon"></img></button> */}
+                    </div>
+            
+            <table class="table " data={data}>
                 <thead>
                     <tr>
                         <tr><a role="checkbox"></a></tr>

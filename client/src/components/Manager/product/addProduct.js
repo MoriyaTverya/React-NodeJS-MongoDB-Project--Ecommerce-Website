@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AddColor from "./AddColor";
-import Color from "./Manager/Cart";
-import Category from "./Manager/category/Category";
 export default function AddProduct() {
 
     const sizeList = [0,1,2,3,4,5,6]
@@ -16,7 +13,6 @@ export default function AddProduct() {
     })
 
     const [productSizes, setSizes] = useState({});
-    const [productSales, setSales] = useState({});
     const [productImages, setImages] = useState([]);
     const [productColors, setColorState] = useState([])
     const [productCategories, setCategories] = useState([]);
@@ -85,12 +81,6 @@ export default function AddProduct() {
                     [name]: parseInt(value, 10)
                 }
             });
-            setSales (prevState => {
-                return {
-                    ...prevState,
-                    [name]: 0
-                }
-            });
     }
 
 
@@ -122,10 +112,8 @@ export default function AddProduct() {
             productImages: productImages,
             productColors: productColors,
             productSizes: productSizes,
-            productSales: productSales,
             productSale: input.productSale,
-            productSalePrice: input.productSalePrice, 
-            productLikes: []
+            productSalePrice: input.productSalePrice
            
         }
 
@@ -223,6 +211,25 @@ export default function AddProduct() {
                                 disabled = {!input.productSale}
                             /></div>
                             
+                            
+                            <h5>קטגוריות</h5>
+                            {
+
+                                categoryList.map(item =>
+                                    <ul>
+                                        <il>
+                                            <input type="checkbox" className="form-check-input m-1" onChange={handleCheckboxCategoryChange} id={item.categoryName} value={item.categoryName} name="productCategory" />
+                                            {item.categoryName}
+                                        </il>
+                                        {item.subcategories.map(x =>
+                                            <ul><div>
+                                                <input type="checkbox" className="form-check-input m-1" onChange={handleCheckboxCategoryChange} id={x.categoryName} value={x.categoryName} name="productCategory" />
+                                                {x.categoryName}
+                                            </div></ul>)
+                                        }
+                                    </ul>)
+                            }
+
                             <h5>מידות</h5>
                             <div>
                                 {
@@ -250,33 +257,12 @@ export default function AddProduct() {
                                 type="file"
                                 name="productImage"
                                 className="form-control"
-                                accept=".jpeg, .png, .jpg"
+                                accept=".jpeg, .png, .jpg, .jfif"
                                 multiple
                                 onChange={(e) => handleFilesUpload(e)}
                             />
 
                             <br />
-                            
-                            <h5>קטגוריות</h5>
-                            {
-
-                                categoryList.map(item =>
-                                    <ul>
-                                        <il>
-                                            <input type="checkbox" className="form-check-input m-1" onChange={handleCheckboxCategoryChange} id={item.categoryName} value={item.categoryName} name="productCategory" />
-                                            {item.categoryName}
-                                        </il>
-                                        {item.subcategories.map(x =>
-                                            <ul><div>
-                                                <input type="checkbox" className="form-check-input m-1" onChange={handleCheckboxCategoryChange} id={x.categoryName} value={x.categoryName} name="productCategory" />
-                                                {x.categoryName}
-                                            </div></ul>)
-                                        }
-                                    </ul>)
-                            }
-                            <Category/> 
-
-                         
 
                             <h5>צבעים</h5>
                             {
@@ -290,8 +276,6 @@ export default function AddProduct() {
                                 )
 
                             }
-
-                            <Color/>
                         </div >  
                          <br />
 

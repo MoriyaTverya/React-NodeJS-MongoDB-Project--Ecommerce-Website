@@ -22,6 +22,13 @@ router.get("/get", async (req, res) => {
   res.send(managers);
 });
 
+router.get(`/get/:id`, async (req, res) => {
+  const id = req.params.id;
+  console.log(req.params.id);
+  let manager = await Manager.findOne({ _id: id });
+  if (!manager) return res.status(404).send("Sorry, there's no such product");
+  return res.status(200).send(manager);
+});
 module.exports = router;
 
 router.post("/validateUser", async (req, res) => {

@@ -1,67 +1,90 @@
-import React, { useState, useEffect} from "react";
-import { useNavigate} from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { UserContext } from './UserProvider';
 
-
-export default function Products() {
-
-    const [removeItems, setRemove] = useState([]);
-
-    function handleCheckboxRemoveChange(event) {
-        if (event.target.checked) {
-            if (!removeItems.includes(event.target.value)) {
-                setRemove(prevState => [...prevState, event.target.value])
-                console.log(removeItems);
-            }
-        } else {
-            setRemove(prevState => prevState.filter(color => color !== event.target.value));
-          
-        }
-    }
+export default function ManageProducts() {
+    
+    const user = useContext(UserContext);
     const navigate = useNavigate();
 
     const clickMe = (data) => {
-      navigate(`/product/${data._id}`);  
+        navigate(`/productDashBoard/${data._id}`);
     }
-     
+
     const [list, setList] = useState([]);
     useEffect(async () => //initial
     {
         let result = await axios.get('http://localhost:3001/product/get');
         setList(result.data)
     }, []);
+    
+
+    const handleLikeChange = async(event, item, i)=>{
+        const id = event.target.value;
+        let userId = {user: user.id};
+       
+
+        if (event.target.checked && !item.productLikes.includes(user.id)){
+           
+           item.productLikes.push(user.id);
+        }
+        else{
+            item.productLikes =  item.productLikes.filter(like => like != user.id);
+        }
+        let tempList = [...list];
+        
+        tempList[i] = item;
+        setList(tempList); 
+        console.log(tempList);
+        console.log(item.productLikes);
+        const res = await axios.post(`http://localhost:3001/product/updateLikes/${id}`, userId);
+            if (res.data === true) {
+                console.log("ok");
+            }
+            else {
+                alert(res);
+            }
+           
+    }
+
+    useEffect(()=>{
+        console.log('list change',list);
+    },[list])
 
     return (
-
-        <div>
+        <div class="not-sidebar">
+            <h1>ניהול מוצרים</h1>
             <div className="container">
                 <div className="px-lg-5">
                     <div className="row">
                         {
-                            list.map((item) =>
-                                <div key={item._id} className="col-xl-3 col-lg-4 col-md-6 mb-4">
-                                     <h5>הסר</h5>
-                                    <input type="checkbox"  value={item._id} onChange={handleCheckboxRemoveChange} />
-                                           
-                               
-                                    <div onClick={() => clickMe(item)} className="bg-white product-image" role="button">
+                            list.map((item, i) =>
+                                <div key={item._id} onClick={() => clickMe(item)}  className="row p-2 border-bottom">
+                                    <div className="bg-white product-image col-1" >
                                         <a href="" className="product-like-icon"><i className="bi bi-chevron-right"></i></a>
-                                        <img src={item.productImages[0]} alt="" className="img-fluid card-img-top" />
-                                        <div className="p-3">
-                                            {/* <h5> <a href="#" className="text-dark"></a></h5> */}
-                                            <p className="large text-muted mb-0">{item.productName}</p>
-                                            <div className="d-flex align-items-center justify-content-between rounded-pill bg-light px-3 py-2 mt-3">
-                                                <p className="small mb-0"><span className="font-weight-bold">₪{item.productPrice}</span></p>
-                                                
-                                            </div>
+                                        <img src={item.productImages[0]} alt="" className=" img-fluid card-img-top" role="button" />
+                                        
+                                         </div>
+                                         <div className="m-2 d-flex col-6">
+                                            
+                                            <p className="">{item.productName}</p>
+                                            
                                         </div>
-                                    </div>
-                                </div>)
+                                        <div className="m-2 d-flex col-4">
+                                        {item.productSale ?
+                                                <div className="d-flex"><p className="text-decoration-line-through">  ₪{item.productPrice}</p> &nbsp; ₪{item.productSalePrice}</div>
+                                                : <div className="d-flex">₪{item.productPrice}</div>}
+                                            </div>
+                                         
+                                </div>
+                                )
                         }
 
                     </div>
+                   
                 </div>
-            </div>
+             </div>
         </div>
     );
 }

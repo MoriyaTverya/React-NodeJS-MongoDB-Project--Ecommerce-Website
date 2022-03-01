@@ -59,10 +59,9 @@ export default function Products() {
                     <div className="row">
                         {
                             list.map((item, i) =>
-                                <div key={item._id} onClick={() => clickMe(item)}  className="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-12">
-                                    <div className="bg-white product-image" >
-                                        <a href="" className="product-like-icon"><i className="bi bi-chevron-right"></i></a>
-                                        <img src={item.productImages[0]} alt="" className="img-fluid card-img-top" role="button" />
+                                <div key={item._id}   className="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-12 zoom">
+                                    <div className="bg-white product-image">
+                                        <img src={item.productImages[0]} onClick={() => clickMe(item)} alt="" className="img-fluid card-img-top" role="button" />
                                         <div className="m-2 d-flex">
                                             <div className="col-9">
                                             <p className="large mb-0">{item.productName}</p>
@@ -71,7 +70,7 @@ export default function Products() {
                                                 : <div className="d-flex">₪{item.productPrice}</div>}
                                             </div>
                                          <div key={item._id} class="checkboxes-container col-2">
-                                            <div class="">
+                                            <div class="ms-0">
                                                 <input checked={item.productLikes.includes(user.id)} class="red-heart-checkbox" id={item._id} value={item._id} type="checkbox" onChange={(e)=>handleLikeChange(e, item, i)}></input>
                                                 <label for={item._id}>
                                                    

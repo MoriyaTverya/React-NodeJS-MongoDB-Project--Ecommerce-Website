@@ -25,14 +25,16 @@ export default function LoginT(props) {
 
     function setUser(user) {
         window.sessionStorage.setItem('auth', true);
-        window.sessionStorage.setItem('name', user.username);
+        window.sessionStorage.setItem('name', user.name);
         window.sessionStorage.setItem('id', user._id);
+        window.sessionStorage.setItem('innerAuth', user.auth);
     }
 
     function logoutUser() {
         window.sessionStorage.setItem('auth', null);
         window.sessionStorage.setItem('name', null);
         window.sessionStorage.setItem('id', null);
+        window.sessionStorage.setItem('innerAuth', null);
     }
 
     const handleSubmit = async (event) => {
@@ -43,11 +45,12 @@ export default function LoginT(props) {
         }
         console.log(newManager);
 
-        const res = await axios.post('http://localhost:3001/manager/validateUser', newManager);
+        const res = await axios.post('http://localhost:3001/user/validateUser', newManager);
         console.log("res", res);
         if (res.data.valid === true) {
             console.log(res.data.user);
             setUser(res.data.user);
+            console.log("hey",window.sessionStorage.getItem('name'));
             setAuth(true);
             props.setLogin(true);
         }
@@ -90,17 +93,17 @@ export default function LoginT(props) {
                         />
                     </div>
                     {!auth && <p>שם משתמש וסיסמה שגויים, נסה שנית</p>}
-                    <br></br>
-                    <div className="form-group">
+                    {/* <br></br> */}
+                    {/* <div className="form-group">
                         <div className="custom-control custom-checkbox">
                             <input type="checkbox" className="custom-control-input" id="customCheck1" />
                             <label className="custom-control-label m-1" htmlFor="customCheck1">זכור אותי</label>
                         </div>
-                    </div>
+                    </div> */}
                     <button type="submit" className="btn btn-primary btn-block" disabled={!validateForm()}>כניסה</button>
-                    <p className="forgot-password text-right">
+                    {/* <p className="forgot-password text-right">
                         שכחת <a href="google.com">סיסמה?</a>
-                    </p>
+                    </p> */}
                 </form>
             </div>
         </div>

@@ -6,12 +6,17 @@ import { UserContext } from './UserProvider';
 export default function Cart() {
 
 
+
     const user = useContext(UserContext);
     const navigate = useNavigate();
 
     const clickMe = (data) => {
         navigate(`/product/${data._id}`);
     }
+
+    const [input, setInput] = useState([]);
+
+    const [sizes, setSizes] = useState({});
 
     const [itemsDetails, setItems] = useState([]);
     const [cartItems, setCartItems] = useState([]);
@@ -137,9 +142,11 @@ export default function Cart() {
         }
         return result;
     }
+
     const getAmount = async (sizes, productId) => {
         let result = await axios.get(`http://localhost:3001/product/${productId}`);
-        result = result.data.productSales;
+        result = result.data.productSizes;
+        console.log(result, "---", sizes);
         for (const size in sizes) {
             result[size] = result[size] + sizes[size];
         }
@@ -152,6 +159,37 @@ export default function Cart() {
         await axios.post(`http://localhost:3001/cart/clearCart/${user.id}`);
         setCartItems([]);
     }
+
+    function handleSizeChange(event, index) {
+        event.preventDefault();
+        const { name, value } = event.target;
+        
+        // if (itemsDetails[cartItems[index].productId].productSizes[name] < value) {
+        //     console.log(value);
+            
+        //     setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
+        // }
+        // else {
+        //     setIsStock("")
+        // }
+        // else {
+
+        let tempList = [...cartItems];
+
+        tempList[index].psizes ? tempList[index].psizes[name] ? tempList[index].psizes[name] = value : tempList[index].psizes = { ...tempList[index].psizes, [name]: value } : tempList[index] = { ...tempList[index], psizes: { [name]: value } }
+
+        setCartItems(tempList);
+        console.log(cartItems);
+        setSizes(prevState => {
+            return {
+                ...prevState,
+                [name]: parseInt(value, 10)
+            }
+        });}
+        // }
+    // }
+    
+
 
 
 
@@ -166,15 +204,22 @@ export default function Cart() {
         //     if(a != true){
         //         break;
         //     }
-        // }
+        // }  
+        let flag = 0;
         for (let item in cartItems) {
-            cartItems[item].newStock = await getNewStock(cartItems[item].psizes, cartItems[item].productId);
-            const newStock = { newStock: await getNewStock(cartItems[item].psizes, cartItems[item].productId) };
-            const res1 = await axios.post(`http://localhost:3001/product/updateStock/${cartItems[item].productId}`, newStock);
-            const amount = { amount: await getAmount(cartItems[item].psizes, cartItems[item].productId) };
-            console.log(amount);
-            const res2 = await axios.post(`http://localhost:3001/product/updateSales/${cartItems[item].productId}`, amount);
-            console.log("item", cartItems[item], "\n res1: ", res1, "\n res2: ", res2);
+            if (cartItems[item].psizes) {
+                console.log(cartItems[item].psizes);
+                cartItems[item].newStock = await getNewStock(cartItems[item].psizes, cartItems[item].productId);
+                const newStock = { newStock: await getNewStock(cartItems[item].psizes, cartItems[item].productId) };
+                const res1 = await axios.post(`http://localhost:3001/product/updateStock/${cartItems[item].productId}`, newStock);
+                const amount = { amount: await getAmount(cartItems[item].psizes, cartItems[item].productId) };
+                console.log(amount);
+                const res2 = await axios.post(`http://localhost:3001/product/updateSales/${cartItems[item].productId}`, amount);
+                console.log("item", cartItems[item], "\n res1: ", res1, "\n res2: ", res2);
+
+            } else {
+                alert(" לא נבחרו מידות עבור " +  itemsDetails[cartItems[item].productId].productName )
+            }
         }
         console.log("item", cartItems);
         // if(a === true){
@@ -192,16 +237,17 @@ export default function Cart() {
         const res = await axios.post('http://localhost:3001/order/create', newOrder);
 
         if (res.data === true) {
-            alert("ok");
+            alert("ההזמנה בוצעה בהצלחה");
         }
         if (res.data === false) {
-            alert("No");
+            alert("אירעה שגיאה");
         }
 
 
         for (let item in cartItems) {
             removeAfterOrder(cartItems[item].productId);
         }
+
 
 
         // }
@@ -211,19 +257,19 @@ export default function Cart() {
 
     return (
         <div className="container content">
+            <h1>סל</h1>
 
-            <div className="row w-75">
-                <h4>סל</h4>
+            <div className="row">
                 {cartItems[0] ?
                     <div>
-                        <button className="btn turkiz m-2" onClick={sendOrder} >שליחת הזמנה</button>
-                <button className="btn pink m-2" onClick={clearCart} >רוקן סל</button>
+                        <button className="btn turkiz m-2 zoom" onClick={sendOrder} >ביצוע הזמנה</button>
+                        <button className="btn pink m-2 zoom" onClick={clearCart} >רוקן סל</button>
                         {
-                            cartItems.map((p) =>
-                                <div key={p._id} className="m-3">
+                            cartItems.map((p, index) =>
+                                <div key={p._id} className="">
 
                                     {itemsDetails[p.productId] ?
-                                        <div className="row">
+                                        <div className="row border p-2">
 
 
                                             <div className="p-0 col-lg-1 col-sm-1">
@@ -233,37 +279,61 @@ export default function Cart() {
                                                 <h5>{itemsDetails[p.productId].productName}</h5>
                                                 <p >{p.price} ₪ </p>
                                             </div>
-                                            <div className="col-lg-2 col-sm-2">
+                                            {/* <div className="col-lg-2 col-sm-2">
                                                 <h6>כמויות</h6>
                                                 <div>{getSizes(p.psizes)}</div>
+                                            </div> */}
+                                            <div className="col-lg-3 col-sm-3">
+                                                <h6>סיכום הזמנה</h6>
+                                                <div>
+                                                    {
+                                                        Object.keys(itemsDetails[p.productId].productSizes).map((size) =>
+
+                                                            <span key={size} className="d-flex py-1">
+                                                                <label className="form-check-label ms-1"> מידה {size}</label>
+                                                                <input onChange={(e) => handleSizeChange(e, index)}
+                                                                    name={size}
+                                                                    type="number" min="0" step="1" max={itemsDetails[p.productId].productSizes[size]}
+                                                                    value={p.psizes ? p.psizes[size] ? p.psizes[size] : 0 : 0}
+                                                                    className="form-control me-1"
+                                                                    id="rounded"
+                                                                    placeholder={p.psizes ? p.psizes[size] ? p.psizes[size] : 0 : 0} style={{ width: "60px", height: "30px" }}
+                                                                />
+                                                                <p className="me-4">{itemsDetails[p.productId].productSizes[size] < 0  ?  ("אזל המלאי") : p.psizes ? p.psizes[size] ? itemsDetails[p.productId].productSizes[size] - p.psizes[size] < 0 ?  ( "קיימים במלאי רק " + itemsDetails[p.productId].productSizes[size] +"  פריטים ") : ("זמין במלאי"):("זמין במלאי"):"זמין במלאי"}</p>
+                                                            </span>
+
+                                                        )
+                                                    }
+
+                                                </div>
                                             </div>
                                             <div className="col-lg-2 col-sm-2">
-                                                <h6 className="d-flex">  סה"כ  </h6> {formatter.format(getPrice(p.price, p.psizes))} ₪
+                                                <h6 className="d-flex">  סה"כ  </h6> 
+                                                <p>{" ₪ "+formatter.format(getPrice(p.price, p.psizes))} </p>
                                             </div>
-                                            <div className="col-lg-4 col-sm-4 border-end">
+                                            <div className="col-lg-3 col-sm-3 border-end">
                                                 <div className="mt-3">
-                                                    <div className="d-flex m-2" value={p.productId} onClick={(e) => removeFromCart(e, p.productId)}><i className="fa-solid fa-x m-1"></i><label>הסרת פריט </label></div>
-                                                    <div className="d-flex m-2" value={p.productId} onClick={(e) => saveToLater(e, p)}><i className="fa-solid fa-arrow-down m-1"></i><label>שמירה למאוחר יותר</label></div>
+                                                    <div className="d-flex pointer zoom" value={p.productId} onClick={(e) => removeFromCart(e, p.productId)}><i className="fa-solid fa-x m-1 pointer"></i>הסרת פריט </div>
+                                                    <div className="d-flex pointer zoom" value={p.productId} onClick={(e) => saveToLater(e, p)}><i className="fa-solid fa-arrow-down m-1 pointer"></i>שמירה למאוחר יותר</div>
                                                 </div>
                                             </div>
 
                                         </div>
-                                        : <div>---</div>
+                                        : <div></div>
                                     }
 
                                 </div>)
                         }
-                    </div> : <div>היי {user.user} :) <br/> עדיין אין פריטים בסל שלך</div>}
+                    </div> : <div className="m-5">היי {user.user} :) <br /> </div>}
             </div>
             <div className="row border-top m-5 p-2">
-                <h4>מועד מאוחר יותר</h4>
+              
                 {laterItems.map((p) =>
-                    <div key={p._id} className="m-2">
+                    <div key={p._id} className="m-2">  
+                    <h4>מועד מאוחר יותר</h4>
 
                         {itemsDetails[p.productId] ?
                             <div className="row">
-
-
                                 <div className="p-0 col-lg-1 col-sm-1">
                                     <img className=" m-1 w-100" src={itemsDetails[p.productId].productImages[0]}></img>
                                 </div>
@@ -294,6 +364,5 @@ export default function Cart() {
             </div>
         </div>
 
-            );
+    );
 }
-

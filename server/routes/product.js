@@ -132,6 +132,7 @@ router.post('/updateStock/:id', async (req, res) => {
 })
 
 router.post('/updateSales/:id', async (req, res) => {
+  console.log("updated", req.body.amount);
   const product = await Product.updateOne(
     { _id: req.params.id },
     {

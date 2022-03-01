@@ -9,15 +9,20 @@ function Home() {
   return (
     <div className="Home">
       <div className="row">
-        <img src src="product_images/panel.jpg" className=" col-12" />
+        <img src src="product_images/panel_2.jpg" className=" col-12" />
       </div>
       <div className="row g-0 pt-5">
+      {/* <div
+          class="bg-image col-lg-4 col-sm-6"
+          style={{ backgroundImage: `url(${ordman_home})`, height: "100vh"}}
+        ></div> */}
+       {/* <div className= "col-lg-4 col-sm-6"> <img src={ordman_home} className="col-12" /><h1 className="mt--5">בגדי הנקה</h1></div> */}
+       <div className= "col-lg-4 col-sm-6"></div>
+        <div style={{ backgroundColor: "#E63C6C" }} className="col-lg-4 col-sm-6">שמלות </div>
         <img src={ordman_home} className="col-lg-4 col-sm-6" />
-        <div style={{ backgroundColor: "#E63C6C" }} className="col-lg-4 col-sm-6" />
+        <div style={{ backgroundColor: "#10B9B5" }} className="col-lg-4 col-sm-6">ילדות</div>
         <img src={ordman_home} className="col-lg-4 col-sm-6" />
-        <div style={{ backgroundColor: "#10B9B5" }} className="col-lg-4 col-sm-6" />
-        <img src={ordman_home} className="col-lg-4 col-sm-6" />
-        <div style={{ backgroundColor: "#FFD400" }} className="col-lg-4 col-sm-6" />
+        <div style={{ backgroundColor: "#FFD400" }} className="col-lg-4 col-sm-6">חולצות</div>
       </div>
       <div className="spacer-inner"></div>
 
@@ -103,7 +108,7 @@ function Home() {
           </div>
         </section>
         {/* <!-- Section: Links  --> */}
-
+       
         {/* <!-- Copyright --> */}
         <div className="text-center p-4" style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}>
           © כל הזכויות שמורות לאורדמן

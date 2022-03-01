@@ -36,7 +36,7 @@ export default function Products() {
 
     <div>
       <div className="container">
-        <div>❤ המוצרים שאהבת ❤</div>
+        <h1 className="price">המוצרים שאהבת</h1>
         <div className="px-lg-5">
           <div className="row">
             {

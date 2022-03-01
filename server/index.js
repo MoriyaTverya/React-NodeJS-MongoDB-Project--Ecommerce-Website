@@ -25,7 +25,7 @@ app.use("/category", require("./routes/category"));
 app.use("/color", require("./routes/color"));
 app.use("/order", require("./routes/order"));
 app.use("/cart", require("./routes/cart"));
-
+app.use("/user", require("./routes/user"));
 
 //connect to mongo
 //require routes 

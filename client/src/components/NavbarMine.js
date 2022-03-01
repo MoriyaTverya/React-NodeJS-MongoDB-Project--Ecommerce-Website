@@ -14,6 +14,10 @@ export default function NavbarMine(props) {
     const user = useContext(UserContext);
     console.log(user);
 
+    const[innerLogin, setInnerLogin] = useState(false);
+
+    console.log(innerLogin);
+
     const navigate = useNavigate();
 
     const clickMe = (data) => {
@@ -47,13 +51,18 @@ export default function NavbarMine(props) {
 
                 <a className="navbar-brand p-0 me-0 " href="/home">
                     <img src={logo} className="logo" />
-                </a>
-
+                </a> 
+                
                 <div className="nav-item m-1">
                         <button className="btn turkiz nav-item" role="button" onClick={logout}>
                             יציאה
                         </button>
                 </div>
+
+            
+            {
+                innerLogin?
+                <div></div>:
                 <div className="navber-brand d-flex align-self-center m-2">
                     <div className="nav-item">
                         <a href="/Cart" className="notification">
@@ -74,6 +83,11 @@ export default function NavbarMine(props) {
 
                     </div>
                 </div>
+                
+            }
+
+
+                
 
 
 
@@ -91,11 +105,16 @@ export default function NavbarMine(props) {
 
                     {/* <ul className="navbar-nav p-2"> */}
 
-                    <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">
-                        <input id="search-input" className="form-control " type="search" placeholder="חיפוש" ></input>
+                    {/* <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">
+                        <input id="search-input" className="form-control" type="search" placeholder="חיפוש" ></input>
                         <i className="fa-solid fa-magnifying-glass"></i>
-                        {/* <button className="btn" type="submit"><img src={search} className="icon"></img></button> */}
-                    </div>
+                        // <button className="btn" type="submit"><img src={search} className="icon"></img></button>
+                    </div> */}
+
+                    {
+                innerLogin?
+                <div></div>:
+                <div className="d-flex">
 
                     <div className="nav-item">
                         <a className="nav-link" href="/Products">כל הפריטים</a>
@@ -103,7 +122,7 @@ export default function NavbarMine(props) {
 
                     <div className="nav-item dropdown">
                         <div className="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-                            קטגוריות
+                            מה תרצי לקנות
                         </div>
                         <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                             {categoryList.map(item =>
@@ -119,6 +138,7 @@ export default function NavbarMine(props) {
                         </ul>
 
                     </div>
+                    </div>}
 
                     {/* </ul> */}
 

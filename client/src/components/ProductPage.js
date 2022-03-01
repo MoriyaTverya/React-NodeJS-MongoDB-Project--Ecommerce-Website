@@ -27,8 +27,10 @@ export default function ProductView() {
         setImages(result.data.productImages);
         setImage(result.data.productImages[0]);
         const object = result.data.productSizes;
-        for (const [key] of Object.entries(object)) {
-            arr.push(key);
+        if (object) {
+            for (const [key] of Object.entries(object)) {
+                arr.push(key);
+            }
         }
         setSizeList(arr);
         setStock(result.data.productSizes);
@@ -39,15 +41,6 @@ export default function ProductView() {
         setImage(myimg);
     }
 
-    function handleSizeChange(event) {
-        const { name, value } = event.target;
-        setSizes(prevState => {
-            return {
-                ...prevState,
-                [name]: parseInt(value, 10)
-            }
-        });
-    }
 
     function handleSizeChange(event) {
         const { name, value } = event.target;
@@ -70,9 +63,9 @@ export default function ProductView() {
         for (const size in sizes) {
             sum += parseFloat(sizes[size], 10);
         }
-
-        let price = sum * item.productPrice;
-        return price;
+        let price = item.productSale ? item.productSalePrice : item.productPrice;
+        let sumPrice = sum * price;
+        return sumPrice;
     }
 
 
@@ -83,8 +76,8 @@ export default function ProductView() {
     //     })
     //     return sum;
     // }
-    function getStock(stock, sizes){
-        for(const size in sizes){
+    function getStock(stock, sizes) {
+        for (const size in sizes) {
             stock[size] = stock[size] - sizes[size];
         }
         console.log("stockk: ", stock);
@@ -92,9 +85,28 @@ export default function ProductView() {
         return stock;
 
     }
+    const getNewStock = async (sizes, productId) => {
+        let result = await axios.get(`http://localhost:3001/product/${productId}`);
+        result = result.data.productSizes;
+        for (const size in sizes) {
+            result[size] = result[size] - sizes[size];
+        }
+        return result;
+    }
+
+    const getAmount = async (sizes, productId) => {
+        let result = await axios.get(`http://localhost:3001/product/${productId}`);
+        result = result.data.productSales;
+        console.log(result, "---", sizes);
+        for (const size in sizes) {
+            result[size] = result[size] + sizes[size];
+        }
+        return result;
+    }
 
     const createOrder = async (event) => {
         event.preventDefault();
+        console.log(item);
 
         const newOrder = {
             customerId: user.id,
@@ -102,20 +114,35 @@ export default function ProductView() {
             products: [{
                 productId: id,
                 psizes: sizes,
-                price: item.productPrice,
+                price: item.productSale === true ? item.productSalePrice : item.productPrice,
+                newStock: await getNewStock(sizes, id)
             }],
             totalPrice: getPrice(sizes),
             status: 'בטיפול',
-            
-        }
+
+        } 
+        if (sizes) {
+                console.log("s",sizes);
+                item.newStock = await getNewStock(sizes, id);
+                const newStock = { newStock: await getNewStock(sizes, id) };
+                const res1 = await axios.post(`http://localhost:3001/product/updateStock/${id}`, newStock);
+                const amount = { amount: await getAmount(sizes, id) };
+                console.log(amount);
+                const res2 = await axios.post(`http://localhost:3001/product/updateSales/${id}`, amount);
+                console.log("item", item, "\n res1: ", res1, "\n res2: ", res2);
+
+            } else {
+                alert(" לא נבחרו מידות עבור " +  item.productName )
+            }
+        
         console.log(newOrder);
         const res = await axios.post('http://localhost:3001/order/create', newOrder);
 
         if (res.data === true) {
-            alert("ok");
+            alert("הזמנה בוצעה בהצלחה");
         }
         if (res.data === false) {
-            alert("No");
+            alert("אירעה שגיאה");
 
         }
     }
@@ -126,7 +153,7 @@ export default function ProductView() {
             product: {
                 productId: id,
                 psizes: sizes,
-                price: item.productPrice
+                price: item.productSale ? item.productSalePrice : item.productPrice
             }
         }
         console.log(req);
@@ -167,7 +194,9 @@ export default function ProductView() {
                         <article className="card-body">
                             <h1 className="price">{item.productName}</h1>
                             <p className="price-detail-wrap price">
-                                ₪{item.productPrice}
+                                {item.productSale ?
+                                    <div className="d-flex"><p className="text-decoration-line-through">  ₪{item.productPrice}</p> &nbsp; ₪{item.productSalePrice}</div>
+                                    : <div className="d-flex">₪{item.productPrice}</div>}
                             </p>
                             <dl className="item-property">
                                 <p>{item.productDescribe}</p>
@@ -205,6 +234,6 @@ export default function ProductView() {
                     </aside>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

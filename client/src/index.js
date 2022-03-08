@@ -6,9 +6,9 @@ import UserProvider from "./components/UserProvider";
 
 ReactDOM.render(
 
-    <UserProvider>
+   
         <App />
-    </UserProvider>,
+   ,
 
     document.getElementById("root")
 );

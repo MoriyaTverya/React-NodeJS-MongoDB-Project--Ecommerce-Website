@@ -14,6 +14,7 @@ export default function ClientDetails() {
 
     const [input, setInput] = useState({
         name: item.name,
+        password: item.password,
         bissnesName: item.bissnesName,
         mail: item.mail,
         telephon: item.telephon,
@@ -37,6 +38,7 @@ export default function ClientDetails() {
         event.preventDefault();
         const newClients = {
             name: input.name,
+            password: input.password,
             bissnesName: input.bissnesName,
             mail: input.mail.toString(),
             telephon: input.telephon,
@@ -71,6 +73,13 @@ export default function ClientDetails() {
                         name="name"
                         value={input.name}
                         type="text"
+                        className="form-control"
+                    />
+                     <label>סיסמא </label>
+                    <input onChange={handleChange1}
+                        name="password"
+                        value={input.password}
+                        type="password"
                         className="form-control"
                     />
 

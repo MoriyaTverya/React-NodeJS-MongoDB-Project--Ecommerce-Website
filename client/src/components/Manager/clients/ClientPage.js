@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import BarChart from "../../Charts/barChart";
 import Count from "../../Charts/count";
 import ClientOrders from "./ClientOrders";
+import LineChart from "../../Charts/lineChart";
 export default function ClientPage() {
     const { id } = useParams();
     const [item, setItem] = useState([]);
@@ -62,7 +63,22 @@ export default function ClientPage() {
         <div className="not-sidebar">
             <div className="row me-1">
              <h3 className="">{item.name}</h3>
-                <div className="col-4 border-start ">
+             <div className="col-9">
+                    <h4>כל ההזמנות</h4>
+                    <ClientOrders />
+                    <div className="row">
+                        <div className="col-3">
+                            <BarChart name={id} />
+                        </div>
+                        <div className="col-3">
+                            <LineChart name={id} />
+                        </div>
+                         <div className="col-3">
+                            <Count name={id} />
+                        </div>
+                    </div>
+                </div>
+                <div className="col-3 border-start ">
                         <div className="">
                             <h5>פרטים</h5>
                             <label>שם </label>
@@ -112,18 +128,7 @@ export default function ClientPage() {
                     
 
                 </div>
-                <div className="col-8">
-                    <h4>כל ההזמנות</h4>
-                    <ClientOrders />
-                    <div className="row">
-                        <div className="col-9">
-                            <BarChart name={id} />
-                        </div>
-                         <div className="col-3">
-                            <Count name={id} />
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
     );

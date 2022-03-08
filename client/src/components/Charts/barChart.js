@@ -92,7 +92,7 @@ export default function BarChart(props) {
 
 
   }, []);
-  const data1 =
+  const data=
   {
     labels: labels1,
     datasets: [
@@ -121,17 +121,6 @@ export default function BarChart(props) {
         tension: 0.1
       }]
   }
-  const data4 =
-  {
-    labels: labels1,
-    datasets: [
-      {
-        label: "סכום",
-        data: data3,
-        fill: false,
-        borderColor: 'rgb(255, 99, 132)'
-      }]
-  }
   const monthsN = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
   ];
@@ -151,13 +140,9 @@ export default function BarChart(props) {
   const handleTitleChange = ev => setTitle(ev.target.value);
 
   return (
-    <div className="row">
-      <div className="col-6 col-lg-6 col-sm-12">
+    <div >
       <h5 className="price">כמות הזמנות לחודש</h5>
-      <Bar data={data1} /></div>
-      <div className="col-6 col-lg-6 col-sm-12">
-      <h5 className="price">עלות הזמנות לחודש</h5>
-      <Line data={data4} /></div>
+      <Bar data={data} />
     </div>
   );
 }

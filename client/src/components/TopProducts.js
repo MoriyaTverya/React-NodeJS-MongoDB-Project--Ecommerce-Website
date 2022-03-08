@@ -3,14 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios";
 import { UserContext } from './UserProvider';
 
-export default function CategoryPage() {
+export default function TopProducts() {
 
-    const {id} = useParams();
-    
-    // useEffect(() => {
-    //     window.location.reload(false);
-    // }, [id])
-
+    const { id } = useParams();
     const user = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -19,38 +14,50 @@ export default function CategoryPage() {
     }
 
     const [list, setList] = useState([]);
+    const [product, setProduct] = useState([]);
+    // const [data, setData] = useState([]);
     useEffect(async () => //initial
     {
       
       let result = await axios.get('http://localhost:3001/product/get');
+      //  setData(result.data);
       let data=result.data;
-    if(id!="מבצע"){
-        const filteredRows = data.filter((row) => {
-            console.log(row.productCategories)
-            console.log({ id })
-            return row.productCategories.includes(id);
-        });
-        if (filteredRows.length < 1) {
-             alert("אין פריטים תואמים לחיפוש שלך")
-        }
-        else {
-            console.log(filteredRows)
-            setList(filteredRows)
-        }  
-    }
-    else{
-        const filteredRows = data.filter((row) => {
-            return row.productSale;
-        });
-        if (filteredRows.length < 1) {
-             alert("אין פריטים תואמים לחיפוש שלך")
-        }
-        else {
-            console.log(filteredRows)
-            setList(filteredRows)
-        }  
-    }
-    }, [id]);
+      console.log(data);
+      let d=[];
+      data.forEach(element => {
+          let id=element._id;
+          let sum=0;
+          if(element.productSales){
+          for (const [key, value] of Object.entries(element.productSales)) {
+            console.log(key," ",value)
+            sum+=value;
+           };
+        console.log(element.productSales);
+        d.push({"id":id,"sum":sum});}
+      });
+      d.sort((a, b) => (a.sum > b.sum) ? -1 : 1)
+      console.log("ddddd",d);
+      let top=[];
+      for(let i=0; i<4; i++){
+          let id= d[i];
+          console.log(id.id);
+          let re =await axios.get(`http://localhost:3001/product/${id.id}`);
+      top.push(re.data);
+      }
+      console.log("toppp",top);
+      setList(top);
+        // const filteredRows = data.sort((a, b) => a.productSales.forEach(element => {
+            
+        // }) > b.productSales ? 1 : -1)
+        // if (filteredRows.length < 1) {
+        //      alert("אין פריטים תואמים לחיפוש שלך")
+        // }
+        // else {
+        //     console.log(filteredRows)
+        //     setList(filteredRows)
+        // }  
+    // console.log(filteredRows);
+    }, []);
 
 
     const handleLikeChange = async (event, item, i) => {
@@ -87,7 +94,7 @@ export default function CategoryPage() {
 
     return (
         <div>
-            <div>{id}</div>
+            <h2>מוצרים מובילים</h2>
             <div className="container">
                 <div className="px-lg-5">
                     <div className="row">

@@ -16,7 +16,9 @@ export default function ProductView() {
     const [images, setImages] = useState([]);
     const [largeImage, setImage] = useState('');
     const [isStock, setIsStock] = useState([]);
-
+    const [isStockList, setStockList] = useState([]);
+    const [valid, setValid] = useState(false);
+    
     let arr = [];
 
     useEffect(async () => //initial
@@ -45,17 +47,35 @@ export default function ProductView() {
     function handleSizeChange(event) {
         const { name, value } = event.target;
         if (stock[name] < value) {
-            setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
+            setValid(false)
+            // setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
+            if(!isStockList.includes( " ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי "))
+            setStockList([...isStockList, " ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי "])
         }
         else {
+            setValid(true);
+            console.log(sizes);
+            for (const size in sizes) {
+                if (stock[size] < sizes[size]) {
+                    setValid(false);
+                    console.log(stock[size] ,"----" ,sizes[size])
+                }
+            }
+            console.log(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ");
+            const filteredRows = isStockList.filter((row) => {
+                return !row.includes(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ");
+            });
+            console.log(isStockList);
+            setStockList(filteredRows);
             setIsStock("")
-            setSizes(prevState => {
+            
+        }
+        setSizes(prevState => {
                 return {
                     ...prevState,
                     [name]: parseInt(value, 10)
                 }
             });
-        }
     }
 
     function getPrice(sizes) {
@@ -80,7 +100,7 @@ export default function ProductView() {
         for (const size in sizes) {
             stock[size] = stock[size] - sizes[size];
         }
-        console.log("stockk: ", stock);
+        console.log("stock: ", stock);
 
         return stock;
 
@@ -142,9 +162,10 @@ export default function ProductView() {
             alert("הזמנה בוצעה בהצלחה");
         }
         if (res.data === false) {
-            alert("אירעה שגיאה");
+                     alert("שגיאה בביצוע הזמנה");
 
         }
+        window.location.reload(false);
     }
 
     const addToCart = async (event) => {
@@ -160,12 +181,13 @@ export default function ProductView() {
         const res = await axios.post(`http://localhost:3001/cart/addToCart/${user.id}`, req);
 
         if (res.data === true) {
-            alert("ok");
+            alert("הזמנתך בוצעה בהצלחה");
         }
         if (res.data === false) {
-            alert("No");
+            alert("שגיאה בביצוע הזמנה");
 
         }
+        window.location.reload(false);
     }
 
 
@@ -222,12 +244,15 @@ export default function ProductView() {
 
                                     )
                                 }
-                                <p className="mt-3">{isStock}</p>
+                                {
+                                    isStockList.map((warning)=><p className="mt-3">{warning}</p>)
+                                }
+                                
                             </div>
 
                             <div className="item-buttons">
-                                <button href="#" className="btn btn-block ms-3 turkiz" onClick={addToCart}> הוספה לעגלה </button>
-                                <button href="#" className="btn btn-block pink" onClick={createOrder}> הזמנה </button>
+                                <button href="#" className="btn btn-block ms-3 turkiz" onClick={addToCart} disabled={!valid}> הוספה לעגלה </button>
+                                <button href="#" className="btn btn-block pink" onClick={createOrder} disabled={!valid}> הזמנה </button>
                             </div>
 
                         </article>

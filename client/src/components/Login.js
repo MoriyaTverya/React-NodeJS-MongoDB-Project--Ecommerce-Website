@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import UserContext from "./UserProvider copy";
+import { useContext } from "react";
 
 export default function LoginT(props) {
+    const {userValue,set_userValue} = useContext(UserContext);//get the curent user from the context
 
     const [auth, setAuth] = useState(true);
     const [input, setInput] = useState({
@@ -28,13 +31,18 @@ export default function LoginT(props) {
         window.sessionStorage.setItem('name', user.name);
         window.sessionStorage.setItem('id', user._id);
         window.sessionStorage.setItem('innerAuth', user.auth);
+        set_userValue({id:user._id,user:user.name, innerAuth:user.auth ,auth:true});
     }
+    // {user,id,auth,innerAuth}
 
     function logoutUser() {
         window.sessionStorage.setItem('auth', null);
         window.sessionStorage.setItem('name', null);
         window.sessionStorage.setItem('id', null);
         window.sessionStorage.setItem('innerAuth', null);
+        // props.setLogin(null);
+        // props.setInnerLogin(null);
+        set_userValue({})
     }
 
     const handleSubmit = async (event) => {
@@ -52,10 +60,13 @@ export default function LoginT(props) {
             setUser(res.data.user);
             console.log("hey",window.sessionStorage.getItem('name'));
             setAuth(true);
-            props.setLogin(true);
+            // props.setLogin(true);
+            // props.setInnerLogin(res.data.user.innerAuth);
+            const user = res.data.user;
+            console.log('the server give me user',user);
+            props.setUser({id:user._id,user:user.name, innerAuth:user.auth ,auth:true});
         }
         if (res.data === false) {
-            logoutUser();
             setAuth(false);
             console.log(auth);
 

@@ -6,15 +6,17 @@ import heart from "../images/heart.png";
 import user_icon from "../images/user.png";
 import search from "../images/search_icon.png";
 import logo from "../images/ordman_logo_nav.png";
-import { UserContext } from './UserProvider';
+import  UserContext  from './UserProvider copy';
 export default function NavbarMine(props) {
+
+    const {userValue,set_userValue} = useContext(UserContext);//get the curent user from the context
 
 
     
-    const user = useContext(UserContext);
-    console.log(user);
+    //onst user = useContext(UserContext);
+    console.log(userValue);
 
-    const[innerLogin, setInnerLogin] = useState(false);
+    const[innerLogin, setInnerLogin] = useState(userValue.innerAuth);
 
     console.log(innerLogin);
 
@@ -37,11 +39,16 @@ export default function NavbarMine(props) {
     const [cartItems, setCartItems] = useState([]);
     useEffect(async () => //initial
     {
-        let result = await axios.get(`http://localhost:3001/cart/getCart/${user.id}`);
+        let result = await axios.get(`http://localhost:3001/cart/getCart/${userValue.id}`);
         console.log(result.data.products);
         setCartItems(result.data.products);
     }, []);
-    
+    const [requestSearch,setR]=useState();
+    const clickMeS = (data) => {
+     
+      console.log(requestSearch);
+      navigate(`/search/${requestSearch}`);
+    }
     // console.log(categoryList);
 
     return (
@@ -102,7 +109,11 @@ export default function NavbarMine(props) {
 
 
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-
+                <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">
+                        <input id="search-input" onChange={(e) => setR(e.target.value)} className="form-control" type="search" placeholder="חיפוש" ></input>
+                        <i role="button" onClick={clickMeS} className="fa-solid fa-magnifying-glass"></i>
+                         {/* <button className="btn" type="submit"><img src={search} className="icon"></img></button> */}
+                    </div>
                     {/* <ul className="navbar-nav p-2"> */}
 
                     {/* <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">

@@ -62,7 +62,7 @@ export default function AllClients() {
     }
     //const [list, setList] = useState([]);
 
-
+    var formatter = new Intl.NumberFormat()
     return (
         <div>
             <div role="button" class="btn pink m-2 btn-block" onClick={handleDelete}>מחק</div> 
@@ -93,7 +93,7 @@ export default function AllClients() {
                                 <td class="table-light" role="button" onClick={() => clickMe(item)}>{item._id}</td>
                                 <td class="table-light" role="button" onClick={() => clickMe(item)}>{dateFormat(item.date, "dd/mm/yyyy")}</td>
                                 <td class="table-light" role="button" onClick={() => clickMe(item)}>{item.status}</td>
-                                <td class="table-light" role="button" onClick={() => clickMe(item)}>100</td>
+                                <td class="table-light" role="button" onClick={() => clickMe(item)}>{formatter.format(item.totalPrice)} ₪</td>
 
                             </tr>)
                     }

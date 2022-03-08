@@ -15,7 +15,6 @@ import NotFound from './components/NotFound';
 import AddProduct from './components/AddProduct';
 import AddColor from './components/AddColor';
 import Orders from './components/Orders';
-
 import ManageOrders from './components/Manager/order/Orders';
 import Profile from './components/Profile';
 import CategoryPage from './components/CategoryPage';
@@ -27,40 +26,68 @@ import ClientDetails from './components/Client/ClientDetails';
 import SidenavManager from './components/Manager/SidenavManager';
 import AddClients from './components/Manager/clients/AddClients';
 import AllClients from './components/Manager/clients/AllClients';
-import { UserContext } from './components/UserProvider';
+import UserContext from './components/UserProvider copy';
 import ClientPage from './components/Manager/clients/ClientPage';
 import OrderPage from "./components/Manager/order/OrderPage";
 import AllCategory from "./components/Manager/category/allCategory";
 import Category from "./components/Manager/category/Category";
 import Color from "./components/Manager/Cart";
 import MainPage from "./components/Manager/MainPage";
+import Footer from "./components/Footer";
+import Search from "./components/search";
+import Ui_Ux from "./components/Manager/Ui_Ux";
 function App() {
   
-  const user = useContext(UserContext);
-  const [login, setLogin] = useState(window.sessionStorage.getItem('auth'));
-  // const [innerLogin, setInnerLogin] = useState(false);
-  const [innerLogin, setInnerLogin] = useState(false);
-  // useEffect(async () => //initial
-  // {
-  //     setInnerLogin(window.sessionStorage.getItem('innerAuth'));
-  // }, []);
-  // console.log(innerLogin);
-  return (
-    <div className="App">
+  // const user = useState(useContext(UserContext));
+
+const userData={
+user: window.sessionStorage.getItem('name')||'no name',
+id: window.sessionStorage.getItem('id'),
+auth:false,
+innerAuth:false
+}
+ 
+
+  const [user, setUser] = useState(userData);
+  console.log("my user", user);
+
+ useEffect(()=>{
+   let inner=window.sessionStorage.getItem('innerAuth');
+   let auth=window.sessionStorage.getItem('auth');
+   let _in=false;
+   let _au=false;
+console.log('in refresh, my innerAuth:',inner);
+if(inner&&inner==true|| inner=='true')
+  _in=true;
+if(auth&&auth=='true'||auth==true)
+_au=true;
+
+setUser({...user,auth:_au,innerAuth:_in})
+
+ },[])
+
+
+ return (
+    <div className="App">  
+      <UserContext.Provider value={{ userValue:user, set_userValue:setUser}}>
+
       <BrowserRouter>
-        {login ?
+      <>
+    
+        {user.auth ?
           <div className="content-wrapper">
-            {login && <NavbarMine setLogin={setLogin} />}
-             {innerLogin && <SidenavManager/>}
+           
+            {user.auth && <NavbarMine setLogin={(bool)=>{setUser({...user,auth:bool})}} setInnerLogin={(bool)=>{setUser({...user,innerAuth:bool})}} />}
+             {user.innerAuth==true && <SidenavManager/>}
             <Routes>
               {
-                innerLogin?
+                user.innerAuth==true?
                   <>
                     <Route path="/" element={<MainPage />} />
-                    
                     <Route path="/home" element={<MainPage />} />
                     <Route path="/allClients" element={<AllClients name={user} />} />
                     <Route path="/addClients" element={<AddClients name={user} />} />
+                    <Route path="/webUi" element={<Ui_Ux/>} />
                     <Route path="/client/:id" element={<ClientPage />} />
                     <Route path="/allCategory" element={<AllCategory name={user} />} />
                     <Route path="/category" element={<Category name={user} />} />
@@ -85,8 +112,7 @@ function App() {
                   </> 
                   :
                   <>
-                    <Route path="/" element={<Home />} /> 
-                   
+                    <Route path="/" element={<Home />} />
                     <Route path="/home" element={<Home />} />
                     <Route path="/love" element={<Love />} />
                     <Route path="/cart" element={<Cart />} />
@@ -95,16 +121,19 @@ function App() {
                     <Route path="/userDashBoard" element={ <><Sidenav/><UserDashboard /></> }/>
                     <Route path="/orders" element={<><Sidenav /><Orders /></>} />
                     <Route path="/category/:id" element={<CategoryPage />} />
+                    <Route path="/search/:id" element={<Search/>} />
                     <Route path="/clientDetails/:id" element={<><Sidenav/><ClientDetails /></>} />
                     <Route path='*' element={<NotFound />} />
                   </>}
+                  
             </Routes>
+            {user.innerAuth!=true && <Footer/>}
           </div> :
           <Routes>
-            <Route path="*" element={<Login setLogin={setLogin} />} />
+            <Route path="*" element={<Login  setUser={setUser}/>} />
           </Routes>
         }
-      </BrowserRouter>
+     </> </BrowserRouter></UserContext.Provider>
     </div>
   )
     ;

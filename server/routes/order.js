@@ -4,48 +4,48 @@ const Order = require("../models/order");
 const mongoose = require("mongoose");
 const axios = require("axios");
 
-// const checkPer = async (order, stock ) => {
-//   let arr = {};
-//   console.log(order);
-//   for (const size in order) {
-//     if (order[size] > stock[size]) {
-//         arr[size] = false;
-//     }
-//     else{
-//        arr[size] = true;
-//     }}
-//   return arr;
-// }
+const checkPer = async (order, stock ) => {
+  let arr = {};
+  console.log(order);
+  for (const size in order) {
+    if (order[size] > stock[size]) {
+        arr[size] = false;
+    }
+    else{
+       arr[size] = true;
+    }}
+  return arr;
+}
 
-// const isStock = async (product) => {
-//   let result = await axios.get(`http://localhost:3001/product/${product.productId}`);
-//   console.log(result.data.productSizes);
-//   result = result.data.productSizes;
-//   let arr = await checkPer( product.psizes, result);
-//   return arr;
-// }
+const isStock = async (product) => {
+  let result = await axios.get(`http://localhost:3001/product/${product.productId}`);
+  console.log(result.data.productSizes);
+  result = result.data.productSizes;
+  let arr = await checkPer( product.psizes, result);
+  return arr;
+}
 
 
-// const checkStock = async (products) => {
-//   let checkResult = {};
-//   await Promise.all(products.map(async (product) => {
-//      checkResult[product.productId] = await isStock(product);
-//   }));
-//   console.log("ps" ,checkResult);
-//   return checkResult;
-// }
+const checkStock = async (products) => {
+  let checkResult = {};
+  await Promise.all(products.map(async (product) => {
+     checkResult[product.productId] = await isStock(product);
+  }));
+  console.log("ps" ,checkResult);
+  return checkResult;
+}
 
-// function finalCheck(checkResult){
-//   for (const product in checkResult) {
-//     p = checkResult[product];
-//     for(const size in p){
-//       if(!product[size])
-//         return false;
-//     }
-//   }
-//   return true;
+function finalCheck(checkResult){
+  for (const product in checkResult) {
+    p = checkResult[product];
+    for(const size in p){
+      if(!product[size])
+        return false;
+    }
+  }
+  return true;
 
-// }
+}
 
 router.route("/create").post(async (req, res) => {
 
@@ -65,8 +65,8 @@ router.route("/create").post(async (req, res) => {
   
 
 
-  // let checkResult = await checkStock(products);
-  // if (finalCheck(checkResult)){
+  let checkResult = await checkStock(products);
+  if (finalCheck(checkResult))
     newOrder.save();
   //   console.log("saveddd!");
     return res.status(200).send(true);

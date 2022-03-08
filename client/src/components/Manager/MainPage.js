@@ -11,6 +11,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import Sidenav from "./Sidenav";
 
 import BarChart from "../Charts/barChart"
+import LineChart from "../Charts/lineChart"
 import Count from "../Charts/count"
 // import LineChart1 from "./chart/lineChart"
 
@@ -22,8 +23,11 @@ export default function MainPage() {
         <div className="col-3 p">
           <Count />
         </div>
-        <div className="col-12 pe-5 ps-5 pt-2">
+        <div className="col-6 pe-5 ps-5 pt-2">
           <BarChart />
+        </div>
+        <div className="col-6 pe-5 ps-5 pt-2">
+          <LineChart />
         </div>
 
       </div>

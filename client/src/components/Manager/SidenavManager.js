@@ -6,6 +6,20 @@ export default function SidenavManager() {
   return (
     <nav class="sidenav">
       <ul class="sidenav-menu">
+      <li class="sidenav-item">
+          <a class="sidenav-link " href="/webUi" data-mdb-toggle="collapse" role="button" onClick={()=>{}}><span>מפת אתר</span> </a>
+        </li>
+      <li class="sidenav-item">
+          <a class="sidenav-link " data-mdb-toggle="collapse" role="button" onClick={()=>{}}><span>מנהלים</span> </a>
+          {<ul >
+            <li class="sidenav-item">
+              <a class="sidenav-link " href="/allClients" role="button" onClick={()=>{}}> כל המנהלים</a>
+            </li>
+            <li class="sidenav-item">
+              <a class="sidenav-link " href="/addClients" role="button" > הוספת מנהל</a>
+            </li>
+          </ul>}
+        </li>
         <li class="sidenav-item">
           <a class="sidenav-link " data-mdb-toggle="collapse" role="button" onClick={()=>{}}><span>לקוחות</span> </a>
           {showLink1 && <ul >

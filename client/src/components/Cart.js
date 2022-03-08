@@ -13,6 +13,7 @@ export default function Cart() {
     const clickMe = (data) => {
         navigate(`/product/${data._id}`);
     }
+    const [valid, setValid] = useState(true);
 
     const [input, setInput] = useState([]);
 
@@ -90,6 +91,7 @@ export default function Cart() {
         else {
             alert(res);
         }
+        window.location.reload(false);
     }
     const removeAfterOrder = async (productId) => {
         let product = { productId: productId };
@@ -158,22 +160,12 @@ export default function Cart() {
         event.preventDefault();
         await axios.post(`http://localhost:3001/cart/clearCart/${user.id}`);
         setCartItems([]);
+        window.location.reload(false);
     }
 
     function handleSizeChange(event, index) {
         event.preventDefault();
         const { name, value } = event.target;
-        
-        // if (itemsDetails[cartItems[index].productId].productSizes[name] < value) {
-        //     console.log(value);
-            
-        //     setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
-        // }
-        // else {
-        //     setIsStock("")
-        // }
-        // else {
-
         let tempList = [...cartItems];
 
         tempList[index].psizes ? tempList[index].psizes[name] ? tempList[index].psizes[name] = value : tempList[index].psizes = { ...tempList[index].psizes, [name]: value } : tempList[index] = { ...tempList[index], psizes: { [name]: value } }
@@ -185,7 +177,26 @@ export default function Cart() {
                 ...prevState,
                 [name]: parseInt(value, 10)
             }
-        });}
+        })
+        if (itemsDetails[cartItems[index].productId].productSizes[name] < value) {
+            console.log(value);
+            setValid(false)
+            // setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
+        }
+        else {
+            setValid(true);
+            for(var item in cartItems){console.log("item" ,cartItems[item]);
+            if (itemsDetails[cartItems[item].productId].productSizes[name] < value) {
+                    setValid(false);
+                    console.log(itemsDetails[cartItems[item].productId].productSizes[name] ,"----" ,value)
+                }
+            }   
+        }
+            // setIsStock("")
+        
+        // else {
+
+     ;}
         // }
     // }
     
@@ -247,8 +258,7 @@ export default function Cart() {
         for (let item in cartItems) {
             removeAfterOrder(cartItems[item].productId);
         }
-
-
+        window.location.reload(false);
 
         // }
         // else 
@@ -262,7 +272,7 @@ export default function Cart() {
             <div className="row">
                 {cartItems[0] ?
                     <div>
-                        <button className="btn turkiz m-2 zoom" onClick={sendOrder} >ביצוע הזמנה</button>
+                        <button className="btn turkiz m-2 zoom" onClick={sendOrder} disabled={!valid} >ביצוע הזמנה</button>
                         <button className="btn pink m-2 zoom" onClick={clearCart} >רוקן סל</button>
                         {
                             cartItems.map((p, index) =>
@@ -324,7 +334,7 @@ export default function Cart() {
 
                                 </div>)
                         }
-                    </div> : <div className="m-5">היי {user.user} :) <br /> </div>}
+                    </div> : <div className="m-5">לא נוספו עדיין פריטים לסל <br /> </div>}
             </div>
             <div className="row border-top m-5 p-2">
               

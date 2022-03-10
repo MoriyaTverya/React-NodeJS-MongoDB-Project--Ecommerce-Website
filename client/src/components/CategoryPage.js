@@ -6,7 +6,7 @@ import { UserContext } from './UserProvider';
 export default function CategoryPage() {
 
     const {id} = useParams();
-    
+    const [isItems, setIsItems] = useState(true);
     // useEffect(() => {
     //     window.location.reload(false);
     // }, [id])
@@ -31,7 +31,7 @@ export default function CategoryPage() {
             return row.productCategories.includes(id);
         });
         if (filteredRows.length < 1) {
-             alert("אין פריטים תואמים לחיפוש שלך")
+            //  alert("אין פריטים תואמים לחיפוש שלך")
         }
         else {
             console.log(filteredRows)
@@ -43,7 +43,9 @@ export default function CategoryPage() {
             return row.productSale;
         });
         if (filteredRows.length < 1) {
-             alert("אין פריטים תואמים לחיפוש שלך")
+            setIsItems(false);
+            //  alert("אין פריטים תואמים לחיפוש שלך")
+
         }
         else {
             console.log(filteredRows)
@@ -87,11 +89,13 @@ export default function CategoryPage() {
 
     return (
         <div>
-            <div>{id}</div>
+           
             <div className="container">
+                 <div><h1 className="price mt-4">{id}</h1></div>
                 <div className="px-lg-5">
                     <div className="row">
                         {
+                            list.length>0?
                             list.map((item, i) =>
                                 <div key={item._id} className="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-12 zoom">
                                     <div className="bg-white product-image">
@@ -114,7 +118,7 @@ export default function CategoryPage() {
                                         </div>
                                     </div>
                                 </div>
-                            )
+                            ):<div  className="col-lg-12 zoom m-5">אין פריטים זמינים בקטגוריה זו</div>
                         }
 
                     </div>

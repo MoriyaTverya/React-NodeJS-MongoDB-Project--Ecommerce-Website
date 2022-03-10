@@ -3,7 +3,7 @@ import { useNavigate} from 'react-router-dom';
 import axios from "axios";
 
 
-export default function Products() {
+export default function RemoveProducts() {
 
     const [items, setRemove] = useState([]);
 
@@ -41,7 +41,7 @@ export default function Products() {
     const navigate = useNavigate();
 
     const clickMe = (data) => {
-      navigate(`/product/${data._id}`);  
+      navigate(`/productDashBoard/${data._id}`);  
     }
      
     const [list, setList] = useState([]);

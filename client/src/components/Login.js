@@ -111,7 +111,7 @@ export default function LoginT(props) {
                             <label className="custom-control-label m-1" htmlFor="customCheck1">זכור אותי</label>
                         </div>
                     </div> */}
-                    <button type="submit" className="btn btn-primary btn-block" disabled={!validateForm()}>כניסה</button>
+                    <button type="submit" className="btn btn-primary btn-block mt-3" disabled={!validateForm()}>כניסה</button>
                     {/* <p className="forgot-password text-right">
                         שכחת <a href="google.com">סיסמה?</a>
                     </p> */}

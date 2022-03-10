@@ -38,7 +38,8 @@ export default function TopProducts() {
       d.sort((a, b) => (a.sum > b.sum) ? -1 : 1)
       console.log("ddddd",d);
       let top=[];
-      for(let i=0; i<4; i++){
+      for(let i=0; i<d.length && i<4; i++){
+         
           let id= d[i];
           console.log(id.id);
           let re =await axios.get(`http://localhost:3001/product/${id.id}`);

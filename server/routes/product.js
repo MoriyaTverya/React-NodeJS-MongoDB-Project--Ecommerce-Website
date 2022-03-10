@@ -33,7 +33,7 @@ router.route("/create").post((req, res) => {
     productSale,
     productSalePrice,
     productLikes,
-    productSales 
+    productSales
   });
 
   newProduct.save();
@@ -146,6 +146,35 @@ router.post('/updateSales/:id', async (req, res) => {
   return res.status(200).send(true);
 })
 
+router.post(`/update/:id`, async (req, res) => {
+  console.log("iiiiiiii");
+  console.log(req.params.id);
+  const product = await Product.updateOne(
+    { _id: req.params.id },
+    {
+      $set:
+      {
+        productName: req.body.productName,
+        productPrice: req.body.productPrice,
+        productCode: req.body.productCode,
+        productDescribe: req.body.productDescribe,
+        productCategories: req.body.productCategories,
+        productColors: req.body.productColors,
+        productImages: req.body.productImages,
+        productSizes: req.body.productSizes,
+        productSale: req.body.productSale,
+        productSales: req.body.productSales,
+        productSalePrice: req.body.productSalePrice,
+        productLikes: req.body.productLikes,
+
+      }
+    }
+  );
+  // console.log(product);
+  if (!product)
+    return res.status(404).send("Sorry, there's no such post");
+  return res.send(true).status(200);
+})
 
 // router.post("/", async (req, res) => {
 //   console.log(req.body);

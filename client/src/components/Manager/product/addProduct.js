@@ -159,8 +159,11 @@ export default function AddProduct() {
         <div className="not-sidebar">
             <div className="container">
                 <div className="auth-inner-forms">
-                    <form onSubmit={handleSubmit}>
-                        <h1 className="mb-4"> הוספת מוצר </h1>
+                   
+                    <form onSubmit={handleSubmit}> 
+                        <h2 className="mb-4"> הוספת מוצר </h2>
+                    <div className="row">
+                        <div className="col-lg-3 col-md-3 col-sm-12">
                         <div className="form-group">
                             <h5>שם המוצר</h5>
                             <input onChange={handleChange}
@@ -210,8 +213,8 @@ export default function AddProduct() {
                                 placeholder="מחיר מבצע"
                                 disabled = {!input.productSale}
                             /></div>
-                            
-                            
+                          </div>
+                          <div className="col-lg-6 col-md-6 col-sm-12">
                             <h5>קטגוריות</h5>
                             {
 
@@ -277,10 +280,12 @@ export default function AddProduct() {
 
                             }
                         </div >  
+                        </div>
                          <br />
 
                         <button type="submit" className="btn btn-primary btn-block" onClick={handleSubmit} disabled={!validateForm()}>הוסף</button>
-
+                        </div>
+                            
                     </form>
                 </div>
             </div>

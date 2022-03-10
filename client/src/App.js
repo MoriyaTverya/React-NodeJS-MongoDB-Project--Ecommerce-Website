@@ -13,10 +13,10 @@ import ProductPage from './components/ProductPage';
 import Sidenav from './components/Sidenav';
 import NotFound from './components/NotFound';
 import AddProduct from './components/AddProduct';
-import AddColor from './components/AddColor';
+import AddColor from './components/Manager/AddColor';
 import Orders from './components/Orders';
 import ManageOrders from './components/Manager/order/Orders';
-import Profile from './components/Profile';
+import RemoveProduct from './components/RemoveProduct';
 import CategoryPage from './components/CategoryPage';
 import Home from './components/Home';
 import ManageProducts from './components/ManageProducts';
@@ -31,11 +31,14 @@ import ClientPage from './components/Manager/clients/ClientPage';
 import OrderPage from "./components/Manager/order/OrderPage";
 import AllCategory from "./components/Manager/category/allCategory";
 import Category from "./components/Manager/category/Category";
-import Color from "./components/Manager/Cart";
+import Color from "./components/Manager/Color";
 import MainPage from "./components/Manager/MainPage";
 import Footer from "./components/Footer";
 import Search from "./components/search";
 import Ui_Ux from "./components/Manager/Ui_Ux";
+import ProductManage from './components/ProductManage';
+// import AddColor from './components/AddColor';
+import AddCategory from './components/Manager/category/AddCategory';
 function App() {
   
   // const user = useState(useContext(UserContext));
@@ -90,15 +93,15 @@ setUser({...user,auth:_au,innerAuth:_in})
                     <Route path="/webUi" element={<Ui_Ux/>} />
                     <Route path="/client/:id" element={<ClientPage />} />
                     <Route path="/allCategory" element={<AllCategory name={user} />} />
-                    <Route path="/category" element={<Category name={user} />} />
+                    <Route path="/category" element={<AddCategory name={user} />} />
                     <Route path='*' element={<NotFound />} />
                     <Route path="/order/:id" element={<OrderPage />} />
-                    <Route path="/productDashBoard/:id" element={<DashBoardProduct />} />
+                    <Route path="/productDashBoard/:id" element={<ProductManage/>} />
                     <Route path="/addProduct" element={<AddProduct/>} />
                     <Route path="/allProduct" element={<ManageProducts name={user} />} />
-                    <Route path="/cart" element={<Color name={user} />} />
+                    <Route path="/cart" element={<AddColor/>} />
                     <Route path="/Orders" element={<ManageOrders name={user} />} />
-                     <Route path="/profile" element={<><Profile /></>} />
+                     <Route path="/removeProducts" element={<RemoveProduct/>} />
                     <Route path="/Products" element={<Products />} />‏
                     {/* <Route path="/manageProducts" element={<><Sidenav /><ManageProducts /></>} />
                     <Route path="/home" element={<MainPage setShow={setShow} name={user} />} />

@@ -7,7 +7,7 @@ import axios from "axios";
 // import FormLabel from '@mui/material/FormLabel';
 
 
-export default function Content() {
+export default function AddCategory() {
 
     const [input, setInput] = useState({
         category: '',
@@ -70,7 +70,7 @@ export default function Content() {
         }
     }
     return (
-        <div className="" >
+        <div className="not-sidebar" >
             <div className="">
                 <form onSubmit={handleSubmit} dir="rtl">
 

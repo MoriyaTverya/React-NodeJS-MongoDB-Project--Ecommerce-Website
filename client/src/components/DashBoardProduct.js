@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { UserContext } from './UserProvider';
 import {Doughnut, Bar} from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-export default function DashBoardProduct() {
+export default function DashBoardProduct(props) {
 
 
     const user = useContext(UserContext);
@@ -24,6 +24,7 @@ export default function DashBoardProduct() {
     const [images, setImages] = useState([]);
     const [largeImage, setImage] = useState('');
     const [isStock, setIsStock] = useState([]);
+    const [isUpdate, setUpdate] = useState(false);
 
 
     let arr = [];
@@ -35,14 +36,16 @@ export default function DashBoardProduct() {
         setItem(result.data);
         setImages(result.data.productImages);
         setImage(result.data.productImages[0]);
+        if (result.data.productSizes){
         for (const [key] of Object.entries(result.data.productSizes)) {
             arr.push(key); 
             arr2.push(result.data.productSizes[key]);
         }
         setStockList(arr);
         setStock(result.data.productSizes);
-        setStockData(arr2); 
+        setStockData(arr2);}
         arr = []; arr2 = [];
+        if (result.data.productSales){
         for (const [key] of Object.entries(result.data.productSales)) {
             arr.push(key);
             arr2.push(result.data.productSales[key]);
@@ -50,8 +53,8 @@ export default function DashBoardProduct() {
         setSalesList(arr);
         setSalesData(arr2);
         console.log(stockList);
-        
-        setSales(result.data.productSales);
+        setSales(result.data.productSales);}
+
         setColorList(result.data.productColors);
        arr = [];
         for (const like in result.data.productLikes) {
@@ -60,8 +63,9 @@ export default function DashBoardProduct() {
         }
         setLikes(arr);
         setCategories(result.data.productCategories);
-
+        console.log("res",result.data);
     }, []);
+
 
     function changeImage(event) {
         const myimg = event.target.name;
@@ -124,27 +128,9 @@ export default function DashBoardProduct() {
         }]
     }
 
-    function handleSizeChange(event) {
-        const { name, value } = event.target;
-        if (stock[name] < value) {
-            setIsStock(" ממידה " + name + " קיימים רק " + stock[name] + " פריטים במלאי ")
-        }
-        else {
-            setIsStock("")
-            setSizes(prevState => {
-                return {
-                    ...prevState,
-                    [name]: parseInt(value, 10)
-                }
-            });
-        }
-    }
 
     return (
-        <div class="not-sidebar">
-
-            <div className="container-fluid row">
-                <h1 className="price mt-3 border-bottom">ניהול מוצר</h1>
+         <div className="container-fluid row">
                 <div className="col-6 mt-3">
                 <h2 className="price">פרטים</h2>
                 <div className="bg-white product-image">
@@ -281,6 +267,6 @@ export default function DashBoardProduct() {
                     
 
                 </div>
-            </div ></div>
+            </div >
     );
 }

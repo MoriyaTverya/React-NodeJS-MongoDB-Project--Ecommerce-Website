@@ -109,24 +109,18 @@ export default function NavbarMine(props) {
 
 
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">
-                        <input id="search-input" onChange={(e) => setR(e.target.value)} className="form-control" type="search" placeholder="חיפוש" ></input>
-                        <i role="button" onClick={clickMeS} className="fa-solid fa-magnifying-glass"></i>
-                         {/* <button className="btn" type="submit"><img src={search} className="icon"></img></button> */}
-                    </div>
-                    {/* <ul className="navbar-nav p-2"> */}
-
-                    {/* <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">
-                        <input id="search-input" className="form-control" type="search" placeholder="חיפוש" ></input>
-                        <i className="fa-solid fa-magnifying-glass"></i>
-                        // <button className="btn" type="submit"><img src={search} className="icon"></img></button>
-                    </div> */}
+              
+                   
 
                     {
                 innerLogin?
                 <div></div>:
                 <div className="d-flex">
-
+  <div className="nav-item search-wrapper d-flex align-items-center" dir="rtl">
+                        <input id="search-input" onChange={(e) => setR(e.target.value)} className="form-control" type="search" placeholder="חיפוש" ></input>
+                        <i role="button" onClick={clickMeS} className="fa-solid fa-magnifying-glass"></i>
+                         {/* <button className="btn" type="submit"><img src={search} className="icon"></img></button> */}
+                    </div>
                     <div className="nav-item">
                         <a className="nav-link" href="/Products">כל הפריטים</a>
                     </div>

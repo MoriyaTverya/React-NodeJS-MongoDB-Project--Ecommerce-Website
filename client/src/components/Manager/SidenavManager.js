@@ -55,7 +55,7 @@ export default function SidenavManager() {
               <a class="sidenav-link ripple-surface" href="/addProduct" >הוספת מוצר</a>
             </li>
             <li class="sidenav-item">
-              <a class="sidenav-link ripple-surface" href="/profile"> הסרת מוצר</a>
+              <a class="sidenav-link ripple-surface" href="/removeProducts"> הסרת מוצר</a>
             </li>
           </ul>}
         </li>

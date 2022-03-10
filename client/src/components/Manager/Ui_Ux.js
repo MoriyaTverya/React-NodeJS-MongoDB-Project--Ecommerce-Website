@@ -18,13 +18,14 @@ export default function Ui_Ux() {
 
     function handleChange(event) {
         const { name, value } = event.target;
-
+        console.log(name, "", value);
         setInput(prevInput => {
             return {
                 ...prevInput,
                 [name]: value
             }
         })
+        console.log(input);
     }
 
 
@@ -42,18 +43,26 @@ export default function Ui_Ux() {
     };
 
     const handleFilesUpload = async (e) => {
+        const name = e.target.name;
+        console.log(name);
         const files = await Promise.all(Array.from(e.target.files).map(async file => {
             const base64 = await convertToBase64(file);
             return base64;
         })
         );
         console.log(files);
-        setImages(files);
-        console.log(productImages);
-
+        setInput(prevInput => {
+            return {
+                ...prevInput,
+                [name]: files
+            }
+        })
+        console.log(input);
 
     };
 
+
+    
 
 
 
@@ -62,8 +71,8 @@ export default function Ui_Ux() {
         <div className="not-sidebar">
             <h5>אודות</h5>
             <textarea onChange={handleChange}
-                name="productDescribe"
-                value={input.productDescribe}
+                name="about"
+                value={input.about}
                 type="text"
                 className="form-control p-2 mb-4"
                 placeholder="תיאור מוצר"
@@ -72,24 +81,24 @@ export default function Ui_Ux() {
             <h5>פרטי יצירת קשר</h5>
             <h5>כתובת</h5>
             <input onChange={handleChange}
-                name="productName"
-                value={input.productName}
+                name="address"
+                value={input.address}
                 type="text"
                 className="form-control p-2 mb-4"
                 placeholder="שם מוצר"
             />
             <h5>מייל</h5>
             <input onChange={handleChange}
-                name="productName"
-                value={input.productName}
+                name="email"
+                value={input.email}
                 type="text"
                 className="form-control p-2 mb-4"
                 placeholder="שם מוצר"
             />
             <h5>שירות לקוחות</h5>
             <input onChange={handleChange}
-                name="productName"
-                value={input.productName}
+                name="customerCare"
+                value={input.customerCare}
                 type="text"
                 className="form-control p-2 mb-4"
                 placeholder="שם מוצר"
@@ -99,7 +108,7 @@ export default function Ui_Ux() {
             <h5>לוגו</h5>
             <input
                 type="file"
-                name="productImage"
+                name="logo"
                 className="form-control"
                 accept=".jpeg, .png, .jpg, .jfif"
                 onChange={(e) => handleFilesUpload(e)}
@@ -107,7 +116,7 @@ export default function Ui_Ux() {
             <h5>באנר</h5>
             <input
                 type="file"
-                name="productImage"
+                name="baner"
                 className="form-control"
                 accept=".jpeg, .png, .jpg, .jfif"
                 onChange={(e) => handleFilesUpload(e)}
@@ -115,21 +124,21 @@ export default function Ui_Ux() {
             <h5>קטגוריות</h5>
             <input
                 type="file"
-                name="productImage"
+                name="image1"
                 className="form-control"
                 accept=".jpeg, .png, .jpg, .jfif"
                 onChange={(e) => handleFilesUpload(e)}
             />
             <input
                 type="file"
-                name="productImage"
+                name="image2"
                 className="form-control"
                 accept=".jpeg, .png, .jpg, .jfif"
                 onChange={(e) => handleFilesUpload(e)}
             />
             <input
                 type="file"
-                name="productImage"
+                name="image3"
                 className="form-control"
                 accept=".jpeg, .png, .jpg, .jfif"
                 onChange={(e) => handleFilesUpload(e)}

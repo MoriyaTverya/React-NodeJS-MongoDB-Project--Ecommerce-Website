@@ -90,7 +90,7 @@ export default function Login({ setUser, setShow }) {
                             <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary btn-block" disabled={!validateForm()}>Submit</button>
+                    <button type="submit" className="btn btn-primary btn-block mt-3" disabled={!validateForm()}>Submit</button>
                     <p className="forgot-password text-right">
                         Forgot <a href="google.com">password?</a>
                     </p>

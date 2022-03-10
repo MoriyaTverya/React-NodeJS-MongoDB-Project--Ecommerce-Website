@@ -14,9 +14,8 @@ body {
 
 
 h1,h2,h3,h4,h5,h6{
-  font-weight: 500;
+  /* font-weight: 500; */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 30px;
 }
 
 body, html, #root, .auth-wrapper{
@@ -66,7 +65,7 @@ color: black;
 .sidenav-link{
   color: white;
   text-decoration: none;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 .box {
   display:flex;
@@ -84,7 +83,7 @@ color: black;
 
 .sidenav-menu{
 text-decoration: none;
-margin-top: 100px;
+margin-top: 80px;
 }
 
 ul.sidenav-menu {
@@ -110,20 +109,19 @@ ul.sidenav-menu {
   cursor: pointer;
   color:#10B9B5;
 }
-
+ol, ul {
+  padding-left: 0rem !important
+}
 .sidenav{
   z-index: 1;
   position: fixed;
   top:0px;
-  width: 250px;
+  width: 200px;
   height: 100%;
   margin-left: -250px;
   overflow-y: auto;
   background: #37474F;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+ 
   background-color: #ffffff;
   
   box-shadow: 0px 1px 6px 1px rgba(0, 0, 0, 0.1);
@@ -198,7 +196,6 @@ ul.sidenav-menu {
 .btn.btn-primary.btn-block{
   background-color: #E63C6C;
   border:none;
-  margin-top:20px;
 }
 .btn.btn-primary.position-relative{
   margin-left: 10px;
@@ -742,11 +739,11 @@ div.main_list ul li a:hover {
 }
 
 .not-sidebar {
-  margin-right: 260px;
+  margin-right: 210px;
 }
 .content-wrapper {
   z-index: -1;
-  margin-top: 90px;
+  margin-top: 70px;
   margin-bottom: 100px;
   width: 100%;
   justify-content: center;

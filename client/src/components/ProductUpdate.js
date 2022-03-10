@@ -3,8 +3,14 @@ import axios from "axios";
 import AddColor from "./AddColor";
 import Color from "./Manager/Color";
 import Category from "./Manager/category/Category";
-export default function AddProduct() {
+import { useParams } from "react-router-dom";
+export default function ProductUpdate() {
 
+
+
+    const [item, setItem] = useState();
+
+    const { id } = useParams();
     const sizeList = [0, 1, 2, 3, 4, 5, 6]
     const [input, setInput] = useState({
         productName: '',
@@ -20,6 +26,7 @@ export default function AddProduct() {
     const [productImages, setImages] = useState([]);
     const [productColors, setColorState] = useState([])
     const [productCategories, setCategories] = useState([]);
+    const [productLikes, setLikes] = useState([]);
 
     const [colorList, setcolorList] = useState([]);
     useEffect(async () => //initial  
@@ -34,6 +41,26 @@ export default function AddProduct() {
         let result = await axios.get('http://localhost:3001/category/get');
         setCategoryList(result.data);
     }, []);
+
+    useEffect(async () => //initial
+    {
+        let result = await axios.get(`http://localhost:3001/product/${id}`);
+        setItem(result.data);
+        setInput({
+            productName: result.data.productName,
+            productCode: result.data.productCode,
+            productDescribe: result.data.productDescribe,
+            productPrice: result.data.productPrice,
+            productSalePrice: result.data.productSalePrice,
+            productSale: result.data.productSale
+        })
+        setSizes(result.data.productSizes);
+        setImages(result.data.productImages);
+        setColorState(result.data.productColors);
+        setCategories(result.data.productCategories);
+        setLikes(result.data.productLikes);
+    }, []);
+
 
 
 
@@ -125,16 +152,16 @@ export default function AddProduct() {
             productSales: productSales,
             productSale: input.productSale,
             productSalePrice: input.productSalePrice,
-            productLikes: []
+            productLikes: productLikes
 
         }
 
         console.log(newProduct);
 
-        const res = await axios.post('http://localhost:3001/product/create', newProduct);
+        const res = await axios.post(`http://localhost:3001/product/update/${id}`, newProduct);
 
         if (res.data === true) {
-            alert("ok");
+            alert("עודכן בהצלחה");
         }
         if (res.data === false) {
             alert("No");
@@ -168,11 +195,11 @@ export default function AddProduct() {
     };
 
     return (
-        <div className="not-sidebar">
+        <div className="">
             <div className="container-fluid">
                 <div className="">
                     <form onSubmit={handleSubmit}>
-                        <h4 className=""> הוספת מוצר </h4>
+                        <h4 className="">עדכן מוצר</h4>
                         <div className="row">
                             <div className="col-lg-4 col-md-4 col-sm-12 ms-2">
                                 <div className="form-group">
@@ -215,8 +242,8 @@ export default function AddProduct() {
                                         placeholder="תיאור מוצר"
                                         rows='3'
                                     />
-                                    </div>
-                                    <div className="mt-2">
+                                </div>
+                                <div className="mt-2">
                                     <h5>מחיר</h5>
                                     <div class="row align-items-center">
                                         <div className="col-auto">
@@ -231,8 +258,8 @@ export default function AddProduct() {
                                             /></div>
                                         <div className="col-auto row gx-2 align-items-center">
                                             <div className="col-auto">
-                                            <input type="checkbox" className="form-check-input m-1" onChange={handleSaleChange} name="productSale" id="productSale" />
-                                            <label class="form-check-label" for="productSale">מבצע</label>
+                                                <input type="checkbox" className="form-check-input m-1" checked={input.productSale} onChange={handleSaleChange} name="productSale" id="productSale" />
+                                                <label class="form-check-label" for="productSale">מבצע</label>
                                             </div>
                                             <div class="col-auto">
                                                 <input onChange={handleChange}
@@ -246,34 +273,45 @@ export default function AddProduct() {
 
                                         </div>
                                     </div>
-                                    
+
 
                                     <div className="mt-4">
 
-                                    <h5>מידות</h5>
-                                    <div className="row">
-                                        {
-                                            sizeList.map((size) =>
+                                        <h5>מלאי</h5>
+                                        <div className="row">
+                                            {
+                                                sizeList.map((size) =>
 
-                                                <div class="col-auto row mb-1">
-                                                    <label class="col-auto"> {size}</label>
-                                                    <input onChange={handleSizeChange}
-                                                        name={size}
-                                                        type="number" min="0" step="1"
-                                                        value={input.size}
-                                                        className="form-control col-auto"
-                                                        placeholder="כמות" style={{ width: "80px" }}
-                                                    />
-                                                </div>
+                                                    <div class="col-auto row mb-1">
+                                                        <label class="col-auto"> {size}</label>
+                                                        <input onChange={handleSizeChange}
+                                                            name={size}
+                                                            type="number" min="0" step="1"
+                                                            value={productSizes[size]}
+                                                            className="form-control col-auto"
+                                                            placeholder="כמות" style={{ width: "80px" }}
+                                                        />
+                                                    </div>
 
-                                            )
-                                        }
-                                    </div>
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-4 col-sm-12 ms-5">
                                 <h5>תמונות</h5>
+                                <article className="gallery-wrap">
+                                    <div className="d-flex justify-content-center img-small-wrap p-0">
+                                        {
+                                            productImages.map((image, index) =>
+                                                <div key={`img${index}`} className="item-gallery" >
+                                                    <img src={image} name={image} />
+                                                </div>)
+                                        }
+
+                                    </div>
+                                </article>
                                 <input
                                     type="file"
                                     name="productImage"
@@ -283,27 +321,49 @@ export default function AddProduct() {
                                     onChange={(e) => handleFilesUpload(e)}
                                 />
 
-<div className="mt-3">
+                                <div className="mt-3">
 
-                                <h5>צבעים</h5>
-                                {
-                                    colorList.map(item =>
-                                        <div key={item._id} className="form-check-inline m-2">
-                                            <label className="containerc">
-                                                <input type="checkbox" id="colorcheck" value={item.color} onChange={handleCheckboxColorChange} />
-                                                <span className="checkmark" style={{ backgroundColor: item.color }}></span>
-                                            </label>
-                                        </div>
-                                    )
+                                    <h5>צבעים</h5>
+                                    {
+                                        productColors.map(item =>
+                                            <div key={item._id} className="form-check-inline m-2">
+                                                <label className="containerc">
+                                                    <input type="checkbox" id="colorcheck" value={item.color} onChange={handleCheckboxColorChange} />
+                                                    <span className="checkmark" style={{ backgroundColor: item }}></span>
+                                                </label>
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                <div className="mt-3">
+                                    {
+                                        colorList.map(item =>
+                                            <div key={item._id} className="form-check-inline m-2">
+                                                <label className="containerc">
+                                                    <input type="checkbox" id="colorcheck" value={item.color} onChange={handleCheckboxColorChange} />
+                                                    <span className="checkmark" style={{ backgroundColor: item.color }}></span>
+                                                </label>
+                                            </div>
+                                        )
 
-                                }
+                                    }
 
-                                <div className="border p-2"><Color /></div>
-                            </div>
+                                    <div className="border p-2"><Color /></div>
+                                </div>
                             </div>
                             <div className="col-lg-3 col-md-3 col-sm-12">
 
                                 <h5>קטגוריות</h5>
+                                {
+
+                                    productCategories.map(item =>
+                                        <ul>
+                                            <il>
+                                                   {item}
+                                            </il>
+                                           
+                                        </ul>)
+                                }
                                 {
 
                                     categoryList.map(item =>
@@ -325,8 +385,8 @@ export default function AddProduct() {
                             </div >
                         </div>
                         <div className="float-left">
-                        <button type="submit" className="btn btn-primary btn-block turkiz" onClick={handleSubmit} disabled={!validateForm()}>הוסף מוצר</button>
-</div>
+                            <button type="submit" className="btn btn-primary btn-block turkiz" onClick={handleSubmit} disabled={!validateForm()}>עדכן מוצר</button>
+                        </div>
                     </form>
                 </div>
             </div>

@@ -2,7 +2,6 @@
 This platform serves business clients of a wholesale supplier. The supplier provides goods to clients who order in wholesale quantities, and these wholesale clients then sell the goods to private customers. The platform is designed to facilitate large-scale and varied orders for different product types and sizes.
 
 **Features**<br>
-
 **Easy and Simple Wholesale Ordering:** The platform enables users to place wholesale orders efficiently.<br>
 **User Registration:** User registration is managed exclusively by the supplier. Self-registration is not available.<br>
 **Order Management:** Clients can add the required quantities to their cart, and inventory is updated accordingly when an order is placed.<br>

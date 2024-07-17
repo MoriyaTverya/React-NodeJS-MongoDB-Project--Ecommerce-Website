@@ -1,4 +1,4 @@
-**Project Overview**<br>
+# Project Overview**<br>
 This platform serves business clients of a wholesale supplier. The supplier provides goods to clients who order in wholesale quantities, and these wholesale clients then sell the goods to private customers. The platform is designed to facilitate large-scale and varied orders for different product types and sizes.
 
 **Features**<br>
@@ -13,9 +13,14 @@ This platform serves business clients of a wholesale supplier. The supplier prov
 **Admin Interface:** The admin interface allows the supplier to view and manage client orders, add/update/remove products, add new users, and view sales, product, and client data.
 Admin Features<br>
 
-**Order Management: **View and handle client orders.
+**Order Management:** View and handle client orders.
 **Product Management:** Add, update, or remove products.<br>
-**User Management:** Add new users.<br>
-**Sales Data:** View detailed sales data, product information, and client statistics.
+**User Management:** Add new users, View detailed sales data, product information, and client statistics.
 
 This platform is designed to streamline the wholesale ordering process, making it straightforward for both suppliers and clients to manage large orders and maintain up-to-date inventory and order records.
+
+# SCREENSHOTS EXAMPLES <br>
+![image](https://github.com/user-attachments/assets/db352312-9359-47cc-9fcf-68222aabed83)
+![image](https://github.com/user-attachments/assets/d4ab28d7-a9c8-4eab-829a-771cd56e117c)
+![image](https://github.com/user-attachments/assets/178b4a0b-fd03-49f6-ad27-1c6d949a4fb9)
+
